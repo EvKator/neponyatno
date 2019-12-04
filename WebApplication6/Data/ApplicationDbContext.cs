@@ -7,11 +7,14 @@ using WebApplication6.Data.Entity;
 
 namespace WebApplication6.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, int >
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, string >
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            
         }
+
+
     }
 }

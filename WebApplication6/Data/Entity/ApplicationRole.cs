@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApplication6.Data.Entity
 {
-    public class ApplicationRole: IdentityRole<int>
+    public class ApplicationRole: IdentityRole<string>
     {
     }
 }
