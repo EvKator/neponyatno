@@ -16,5 +16,7 @@ namespace WebApplication6.Data.Entity
         public string LastName { get; set; }
 
         public string FullName { get { return $"{FirstName} {LastName}"; } }
+
+        public virtual ICollection<Specification> CreatedSpecifications { get; set; }
     }
 }
