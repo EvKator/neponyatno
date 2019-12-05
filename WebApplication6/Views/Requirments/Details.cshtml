@@ -1,0 +1,56 @@
+﻿@model WebApplication6.Data.Entity.Requirment
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Requirment</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Specification)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Specification.Name)
+        </dd>
+
+        <h5>Test Cases:</h5>
+        @foreach (var testCase in Model.TestCases)
+        {
+            <div style="background-color:aqua; border:1px solid black">
+                <dt>
+                    Name
+                </dt>
+                <dd>
+                    @testCase.Name
+                </dd>
+                <dt>
+                    Description
+                </dt>
+                <dd>
+                    @testCase.Description
+                </dd>
+            </div>
+        }
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
