@@ -27,6 +27,10 @@ namespace WebApplication6.Data
             
         }
 
+        public DbSet<WebApplication6.Data.Entity.ApplicationRole> ApplicationRole { get; set; }
+
+        public DbSet<WebApplication6.Data.Entity.ApplicationUser> ApplicationUser { get; set; }
+
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
         //    modelBuilder.Entity<Student>().
