@@ -48,7 +48,7 @@ namespace WebApplication6.Controllers
         // GET: Labas/Create
         public IActionResult Create()
         {
-            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email");
             return View();
         }
 
