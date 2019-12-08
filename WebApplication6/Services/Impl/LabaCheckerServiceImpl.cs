@@ -24,7 +24,14 @@ namespace WebApplication6.Services.Impl
             foreach(LabaCase labaCase in laba.LabaCases)
             {
                 if (ContainsRightAnswer(specification, labaCase))
+                {
                     right++;
+                    labaCase.RightAnswer = true;
+                }
+                else
+                {
+                    labaCase.RightAnswer = false;
+                }
             }
             return Convert.ToUInt32(100 * (double)right / (double)specification.Requirments.SelectMany(a => a.TestCases).ToList().Count);
         }
@@ -45,7 +52,7 @@ namespace WebApplication6.Services.Impl
         public bool IsRightAnswer(IEnumerable<TestCase> testCases, LabaCase labaCase)
         {
             var testCase = testCases.Where(t => t.Id == labaCase.TestCaseId).FirstOrDefault();
-            return testCase.RequirmentId == labaCase.RequirmentId;
+            return testCase.RequirmentId == labaCase.RequirmentId && testCase.TestCaseType == labaCase.TestCaseType;
         }
 
         public bool ContainsRightAnswer(Specification specification, LabaCase labaCase)

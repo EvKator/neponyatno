@@ -63,8 +63,6 @@ namespace WebApplication6.Controllers
               .Include(l => l.LabaCases)
                   .ThenInclude(l => l.Requirment)
               .Include(l => l.Specification)
-                  .ThenInclude(l => l.Requirments)
-                      .ThenInclude(l => l.TestCases)
               .FirstOrDefaultAsync(m => m.Id == id);
             if (laba == null)
             {

@@ -223,7 +223,11 @@ namespace WebApplication6.Migrations
 
                     b.Property<int?>("RequirmentId");
 
+                    b.Property<bool?>("RightAnswer");
+
                     b.Property<int?>("TestCaseId");
+
+                    b.Property<int>("TestCaseType");
 
                     b.HasKey("Id");
 
@@ -294,6 +298,8 @@ namespace WebApplication6.Migrations
                         .HasMaxLength(30);
 
                     b.Property<int>("RequirmentId");
+
+                    b.Property<int>("TestCaseType");
 
                     b.HasKey("Id");
 
