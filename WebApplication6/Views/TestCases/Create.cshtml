@@ -5,13 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h4>Введіть інформацію про тест-кейс</h4>
 
-<h4>TestCase</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form id="testcase-form">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -23,20 +21,22 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="RequirmentId" class="control-label"></label>
-                <select asp-for="RequirmentId" class ="form-control" asp-items="ViewBag.RequirmentId"></select>
+                <input asp-for="RequirmentId" class="form-control" value="@ViewBag.RequirmentId" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Додати" class="btn btn-default save-test"/>
             </div>
         </form>
     </div>
+    <div class="col-md-8">
+        <a class="close-newvalue">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </a>
+    </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

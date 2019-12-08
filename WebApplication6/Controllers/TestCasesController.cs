@@ -46,9 +46,13 @@ namespace WebApplication6.Controllers
         }
 
         // GET: TestCases/Create
-        public IActionResult Create()
+        public IActionResult Create(int? requirmentId)
         {
-            ViewData["RequirmentId"] = new SelectList(_context.Requirments, "Id", "Name");
+            if(!requirmentId.HasValue)
+            {
+                return NotFound();
+            }
+            ViewBag.RequirmentId = requirmentId.Value;
             return View();
         }
 
@@ -56,14 +60,14 @@ namespace WebApplication6.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,RequirmentId")] TestCase testCase)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(testCase);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var returnId = _context.Requirments.Find(testCase.RequirmentId).SpecificationId;
+                return new OkResult();
             }
             ViewData["RequirmentId"] = new SelectList(_context.Requirments, "Id", "Name", testCase.RequirmentId);
             return View(testCase);
@@ -143,7 +147,6 @@ namespace WebApplication6.Controllers
 
         // POST: TestCases/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var testCase = await _context.TestCases.FindAsync(id);

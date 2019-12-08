@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -59,10 +60,11 @@ namespace WebApplication6.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,AuthorId")] Specification specification)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Specification specification)
         {
+
             if (ModelState.IsValid)
-            {
+            {    
                 _context.Add(specification);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -79,13 +81,29 @@ namespace WebApplication6.Controllers
                 return NotFound();
             }
 
-            var specification = await _context.Specifications.FindAsync(id);
+            var specification = await _context.Specifications.Include(m => m.Requirments).ThenInclude(y => y.TestCases).FirstAsync(m => m.Id == id);
             if (specification == null)
             {
                 return NotFound();
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", specification.AuthorId);
             return View(specification);
+        }
+
+        public async Task<IActionResult> RenderRequirments(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var specification = await _context.Specifications.Include(m => m.Requirments).ThenInclude(y => y.TestCases).FirstAsync(m => m.Id == id);
+            specification.Requirments = specification.Requirments.OrderByDescending(m => m.Id).ToList();
+            if (specification == null)
+            {
+                return NotFound();
+            }
+            return PartialView("Requirments", specification);
         }
 
         // POST: Specifications/Edit/5

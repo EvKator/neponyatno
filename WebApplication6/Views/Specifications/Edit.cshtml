@@ -4,14 +4,30 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script src="~/js/jquery.js"></script>
+<style>
+    .testcase {
+        margin-left: 100px;
+        background-color: aquamarine !important;
+    }
 
-<h2>Edit</h2>
+    .requirment {
+        margin-left: 5px;
+        background-color: lightgreen !important;
+        margin-right: 100px;
+    }
 
-<h4>Specification</h4>
-<hr />
+    .menu-button {
+        margin-left: auto;
+        margin-right: 0;
+    }
+</style>
+<h2>Відредагуйте завдання</h2>
+
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
+
+    <form asp-action="Edit">
+        <div class="col-md-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -24,22 +40,168 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AuthorId" class="control-label"></label>
-                <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
-                <span asp-validation-for="AuthorId" class="text-danger"></span>
-            </div>
+            @*<div class="form-group">
+                    <label asp-for="AuthorId" class="control-label"></label>
+                    <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
+                    <span asp-validation-for="AuthorId" class="text-danger"></span>
+                </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
-        </form>
-    </div>
+        </div>
+        <div class="col-md-8 requirment-container">
+            @Html.RenderPartialAsync("Requirments", Model);
+        </div>
+    </form>
+
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Назад</a>
+</div>
+
+
+<div class="modal fade" id="confirm-delete-test" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Видалення тест кейсу
+            </div>
+            <div class="modal-body">
+                Ви дійсно хочете видалити цей тест кейс?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Відмінити</button>
+                <a class="btn btn-danger btn-ok">Так</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                Видалення
+            </div>
+            <div class="modal-body">
+                Ви дійсно хочете видалити цей елемент?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Відмінити</button>
+                <a class="btn btn-danger btn-ok">Так</a>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+    $(document).ready(function () {
+                            $('#confirm-delete-test').on('click', '.btn-ok', function (e) {
+                                var $modalDiv = $(e.delegateTarget);
+                                var id = $(this).data('id');
+
+                                $modalDiv.addClass('loading');
+                                $.post('/TestCases/Delete/' + id).then(function () {
+                                    $modalDiv.modal('hide').removeClass('loading');
+                                      refreshRequirment(id);
+                                });
+                            });
+
+                            // Bind to modal opening to set necessary data properties to be used to make request
+                            $('#confirm-delete-test').on('show.bs.modal', function (e) {
+                                var data = $(e.relatedTarget).data();
+                                $('.title', this).text(data.recordTitle);
+                                $('.btn-ok', this).data('id', data.id);
+                            });
+                            $('#confirm-delete').on('click', '.btn-ok', function (e) {
+
+                                var $modalDiv = $(e.delegateTarget);
+                                var id = $(this).data('id');
+
+                                $modalDiv.addClass('loading');
+                                $.post('/Requirments/Delete/' + id).then(function () {
+                                    $modalDiv.modal('hide').removeClass('loading');
+                                    refreshRequirment(id);
+
+                                });
+
+                            });
+
+                            // Bind to modal opening to set necessary data properties to be used to make request
+                            $('#confirm-delete').on('show.bs.modal', function (e) {
+                                var data = $(e.relatedTarget).data();
+                                $('.title', this).text(data.recordTitle);
+                                $('.btn-ok', this).data('id', data.id);
+                            });
+
+    })
+
+
+    function loadNewRequirment(id) {
+        $.ajax({
+            url: "/Requirments/Create",
+            data: { specificationId: id },
+            type: "GET",
+            success: function (result) {
+                $(".newvalue-requirment-" + id).html(result);
+                $(".newvalue-requirment-" + id).find(".close-newvalue").on("click", function (e) {
+                    $(".newvalue-requirment-" + id).html("");
+                })
+                $(".newvalue-requirment-" + id).find('#requirment-form').submit(function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/Requirments/Create',
+                        type: "POST",
+                        data: $(this).serialize(),
+                        success: function (data) {
+                            refreshRequirment(id);
+                        }
+                    });
+                });
+                }
+            })
+    }
+     function loadNewTestCase(id) {
+            $.ajax({
+                url: "/TestCases/Create",
+                data: { requirmentId: id },
+                type: "GET",
+                success: function (result) {
+                    $(".newvalue-testcase-" + id).html(result);
+                    $(".newvalue-testcase-" + id).find(".close-newvalue").on("click", function (e)
+                    {
+                        $(".newvalue-testcase-" + id).html("");
+                    })
+                        $(".newvalue-testcase-" + id).find('#testcase-form').submit(function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/TestCases/Create',
+                        type: "POST",
+                        data: $(this).serialize(),
+                        success: function (data) {
+                            refreshRequirment(id);
+
+                        }
+                    });
+                });
+                }
+            })
+    }
+
+       function refreshRequirment(id) {
+            $.ajax({
+                url: "/Specifications/RenderRequirments",
+                data: { id: "@Model.Id" },
+                type: "GET",
+                success: function (result) {
+                    $(".requirment-container").html(result);
+                }
+            })
+        }
+</script>
+

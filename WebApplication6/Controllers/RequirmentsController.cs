@@ -47,9 +47,13 @@ namespace WebApplication6.Controllers
         }
 
         // GET: Requirments/Create
-        public IActionResult Create()
+        public IActionResult Create(int? specificationId)
         {
-            ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Name");
+            if(!specificationId.HasValue)
+            {
+                return NotFound();
+            }
+            ViewBag.SpecificationId = specificationId.Value;
             return View();
         }
 
@@ -57,14 +61,15 @@ namespace WebApplication6.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Create([Bind("Id,Name,Description,SpecificationId")] Requirment requirment)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(requirment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction("Edit", "Specifications", new { id = requirment.SpecificationId });
+                return new OkResult();
             }
             ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Name", requirment.SpecificationId);
             return View(requirment);
@@ -117,7 +122,7 @@ namespace WebApplication6.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit", "Specifications", new { id = requirment.SpecificationId });
             }
             ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Name", requirment.SpecificationId);
             return View(requirment);
@@ -144,13 +149,12 @@ namespace WebApplication6.Controllers
 
         // POST: Requirments/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var requirment = await _context.Requirments.FindAsync(id);
             _context.Requirments.Remove(requirment);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return new OkResult();
         }
 
         private bool RequirmentExists(int id)
