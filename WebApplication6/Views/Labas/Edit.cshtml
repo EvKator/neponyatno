@@ -27,6 +27,52 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
+
+            <h4>Specification</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Specification.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Specification.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Specification.Description)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Specification.Description)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Specification.Author)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Specification.Author.Id)
+                </dd>
+                <h5>Requirments:</h5>
+                @foreach (var requirment in Model.Specification.Requirments)
+                {
+                    <div style="background-color:aqua; border:1px solid black">
+                        <dt>
+                            Name
+                        </dt>
+                        <dd>
+                            @requirment.Name
+                        </dd>
+                        <dt>
+                            Description
+                        </dt>
+                        <dd>
+                            @requirment.Description
+                        </dd>
+                        <h5>Test Cases:</h5>
+
+                        <div class="form-group">
+                            <label asp-for="SpecificationId" class="control-label"></label>
+                            <select asp-for="SpecificationId" class="form-control" asp-items="ViewBag.TestCase"></select>
+                        </div>
+                    </div>
+                }
         </form>
     </div>
 </div>

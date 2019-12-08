@@ -21,6 +21,8 @@ namespace WebApplication6.Data.Entity
         [ForeignKey("Specification")]
         public int SpecificationId { get; set; }
 
+        public uint? Mark { get; set; }
+
         public virtual ApplicationUser Student { get; set; }
 
         public virtual IList<LabaCase> LabaCases { get; set; }

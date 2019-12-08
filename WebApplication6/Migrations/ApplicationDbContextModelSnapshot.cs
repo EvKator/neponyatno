@@ -198,6 +198,8 @@ namespace WebApplication6.Migrations
 
                     b.Property<int>("LabaStatus");
 
+                    b.Property<long?>("Mark");
+
                     b.Property<int>("SpecificationId");
 
                     b.Property<string>("StudentId");
@@ -219,7 +221,7 @@ namespace WebApplication6.Migrations
 
                     b.Property<int>("LabaId");
 
-                    b.Property<int>("RequirmentId");
+                    b.Property<int?>("RequirmentId");
 
                     b.Property<int?>("TestCaseId");
 
@@ -300,6 +302,25 @@ namespace WebApplication6.Migrations
                     b.ToTable("TestCases");
                 });
 
+            modelBuilder.Entity("WebApplication6.Models.LabaCaseDto", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("RequirmentId");
+
+                    b.Property<int?>("TestCaseId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RequirmentId");
+
+                    b.HasIndex("TestCaseId");
+
+                    b.ToTable("LabaCaseDto");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("WebApplication6.Data.Entity.ApplicationRole")
@@ -366,8 +387,7 @@ namespace WebApplication6.Migrations
 
                     b.HasOne("WebApplication6.Data.Entity.Requirment", "Requirment")
                         .WithMany()
-                        .HasForeignKey("RequirmentId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("RequirmentId");
 
                     b.HasOne("WebApplication6.Data.Entity.TestCase", "TestCase")
                         .WithMany()
@@ -395,6 +415,17 @@ namespace WebApplication6.Migrations
                         .WithMany("TestCases")
                         .HasForeignKey("RequirmentId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("WebApplication6.Models.LabaCaseDto", b =>
+                {
+                    b.HasOne("WebApplication6.Data.Entity.Requirment", "Requirment")
+                        .WithMany()
+                        .HasForeignKey("RequirmentId");
+
+                    b.HasOne("WebApplication6.Data.Entity.TestCase", "TestCase")
+                        .WithMany()
+                        .HasForeignKey("TestCaseId");
                 });
 #pragma warning restore 612, 618
         }

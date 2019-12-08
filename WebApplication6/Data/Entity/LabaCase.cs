@@ -16,7 +16,7 @@ namespace WebApplication6.Data.Entity
         public int? TestCaseId { get; set; }
 
         [ForeignKey("Requirment")]
-        public int RequirmentId { get; set; }
+        public int? RequirmentId { get; set; }
 
         [ForeignKey("Laba")]
         public int LabaId { get; set; }

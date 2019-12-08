@@ -69,12 +69,12 @@ namespace WebApplication6.Controllers
             laba.LabaStatus = Data.Entity.Enum.LabaStatus.SUBMITTED;
             if (ModelState.IsValid)
             {
-                IList<Requirment> requirments = _context.Requirments.Where(a => 
-                a.SpecificationId == laba.SpecificationId).ToList();
-                requirments.Select(r => new LabaCase()
+                IList<TestCase> testCases = _context.TestCases.Where(a => 
+                a.Requirment.SpecificationId == laba.SpecificationId).ToList();
+                testCases.Select(r => new LabaCase()
                 {
                     Laba = laba,
-                    Requirment = r
+                    TestCase = r
                 }).ToList().ForEach(l => laba.LabaCases.Add(l));
 
                 _context.Add(laba);

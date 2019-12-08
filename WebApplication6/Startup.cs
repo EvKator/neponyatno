@@ -13,6 +13,8 @@ using WebApplication6.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebApplication6.Data.Entity;
+using WebApplication6.Services;
+using WebApplication6.Services.Impl;
 
 namespace WebApplication6
 {
@@ -43,6 +45,7 @@ namespace WebApplication6
 
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<ILabaCheckerService, LabaCheckerService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

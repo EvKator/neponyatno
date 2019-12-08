@@ -23,7 +23,74 @@
         <dd>
             @Html.DisplayFor(model => model.Student.Id)
         </dd>
-    </dl>
+
+
+        <h4>Specification</h4>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Specification.Name)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Specification.Name)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Specification.Description)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Specification.Description)
+            </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Specification.Author)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Specification.Author.Id)
+            </dd>
+            <h5>Requirments:</h5>
+            @foreach (var requirment in Model.LabaCases)
+            {
+        <div style="background-color:aqua; border:1px solid black">
+            <dt>
+                Requirment
+            </dt>
+            <dd>
+                @if (requirment.Requirment != null)
+                {
+                    <p>
+                        @requirment.Requirment.Name
+                    </p>
+                    <p>
+                        @requirment.Requirment.Description
+                    </p>
+                }
+                else
+                {
+                    <h4>U've not responded</h4>
+                    <p>Fucking student</p>
+                }
+            </dd>
+            <dt>
+                TestCase
+            </dt>
+            <dd>
+                @if (requirment.TestCase != null)
+                {
+                    <h4>@requirment.TestCase.Name</h4>
+                    <p>@requirment.TestCase.Description</p>
+                }
+                else
+                {
+                    <h4>U've not responded</h4>
+                    <p>Fucking student</p>
+                }
+            </dd>
+        </div>
+            }
+
+
+        </dl>
+
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
