@@ -38,8 +38,11 @@ namespace WebApplication6.Controllers
         public async Task<IActionResult> Index()
         {
             string userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var z = _context.Labas.Where(q => q.StudentId == userId).ToList();
+            ;
+            ;
+
             var applicationDbContext = _context.Labas
-                .Where(a=>a.LabaStatus == Data.Entity.Enum.LabaStatus.SUBMITTED)
                 .Where(a=>a.StudentId == userId)
                 .Include(l => l.Student);
             return View(await applicationDbContext.ToListAsync());
@@ -74,7 +77,7 @@ namespace WebApplication6.Controllers
         // GET: LabasStudent/Create
         public IActionResult Create()
         {
-            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Id");
+            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Email");
             return View();
         }
 
@@ -91,7 +94,7 @@ namespace WebApplication6.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Id", laba.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Email", laba.StudentId);
             return View(laba);
         }
 
@@ -117,7 +120,7 @@ namespace WebApplication6.Controllers
             {
                 return NotFound();
             }
-            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Id", laba.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Email", laba.StudentId);
             ViewData["Status"] = new SelectList(new List<string>() { "SAVED", "READY_FOR_REVIEW" }, "Id", "Id", laba.LabaStatus);
             ViewData["RequirmentId"] = new SelectList(_context.Requirments, "Id", "Name", laba.Specification.Requirments);
             return View(laba);
@@ -141,6 +144,8 @@ namespace WebApplication6.Controllers
                 {
                     List<LabaCase> labaCases = laba.LabaCases.Where(a => a.RequirmentId != null).ToList();
                     laba.LabaCases = labaCases;
+
+                    laba.StudentId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                     _context.Update(laba);
                     _context.SaveChanges();
                     var labaUpdated = _context.Labas
@@ -156,6 +161,7 @@ namespace WebApplication6.Controllers
                     if (labaUpdated.LabaStatus == LabaStatus.READY_FOR_REVIEW)
                     {
                         labaUpdated.Mark = _labaCheckerService.Check(labaUpdated);
+                        labaUpdated.LabaStatus = LabaStatus.CHECKED;
                     }
                     _context.Update(labaUpdated);
 
@@ -174,7 +180,7 @@ namespace WebApplication6.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Id", laba.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Email", laba.StudentId);
             return View(laba);
         }
 

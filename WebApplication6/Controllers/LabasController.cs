@@ -81,7 +81,7 @@ namespace WebApplication6.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StudentId"] = new SelectList(_context.Users, "Email", "Id", laba.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email", laba.StudentId);
             ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Id", laba.SpecificationId);
             return View(laba);
         }
@@ -99,7 +99,7 @@ namespace WebApplication6.Controllers
             {
                 return NotFound();
             }
-            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Id", laba.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email", laba.StudentId);
             return View(laba);
         }
 
@@ -135,7 +135,7 @@ namespace WebApplication6.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Id", laba.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email", laba.StudentId);
             return View(laba);
         }
 
