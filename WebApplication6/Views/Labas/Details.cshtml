@@ -21,7 +21,7 @@
             @Html.DisplayNameFor(model => model.Student)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Student.Id)
+            @Html.DisplayFor(model => model.Student.Email)
         </dd>
 
 
@@ -44,7 +44,7 @@
                 @Html.DisplayNameFor(model => model.Specification.Author)
             </dt>
             <dd>
-                @Html.DisplayFor(model => model.Specification.Author.Id)
+                @Html.DisplayFor(model => model.Specification.Author.Email)
             </dd>
             <h5>Requirments:</h5>
             @foreach (var requirment in Model.Specification.Requirments)
@@ -82,6 +82,12 @@
                     }
                 </div>
             }
+            <dt>
+                @Html.DisplayNameFor(model => model.Mark)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.Mark)
+            </dd>
 
         </dl>
     </dl>

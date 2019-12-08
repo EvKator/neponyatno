@@ -14,20 +14,90 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="LabaStatus" class="control-label"></label>
-                <select asp-for="LabaStatus" class="form-control"></select>
-                <span asp-validation-for="LabaStatus" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StudentId" class="control-label"></label>
-                <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId"></select>
-                <span asp-validation-for="StudentId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-default" />
-            </div>
-        </form>
+            <input type="hidden" asp-for="SpecificationId" />
+            
+            @*<div class="form-group">
+            <label asp-for="StudentId" class="control-label"></label>
+            <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId"></select>
+            <span asp-validation-for="StudentId" class="text-danger"></span>
+        </div>*@
+
+            <h4>Specification</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.Specification.Name)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Specification.Name)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Specification.Description)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Specification.Description)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Specification.Author)
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.Specification.Author.Email)
+                </dd>
+                <h5>Requirments:</h5>
+                @for (int i = 0; i < Model.LabaCases.Count; i++)
+                {
+
+                    @*<input type="hidden" asp-for="@Model.LabaCases[i].RequirmentId" />*@
+                    <input type="hidden" asp-for="@Model.LabaCases[i].TestCaseId" />
+                    <input type="hidden" asp-for="@Model.LabaCases[i].Id" />
+                    <div style="background-color:aqua; border:1px solid black">
+                        <dt>
+                            TestCase Name
+                        </dt>
+                        <dd>
+                            @if (Model.LabaCases[i].TestCase != null)
+                            {
+
+                                <p>
+                                    @Model.LabaCases[i].TestCase.Name
+                                </p>
+                                <p>
+                                    @Model.LabaCases[i].TestCase.Description
+                                </p>
+                            }
+                            else
+                            {
+                                <h4>U've not responded</h4>
+                                <p>Fucking student</p>
+                            }
+                        </dd>
+                        <dt>
+                            Requirment
+                        </dt>
+                        <dd>
+                            <div class="form-group">
+                                <label asp-for="@Model.LabaCases[i].RequirmentId" class="control-label"></label>
+                                <select asp-for="@Model.LabaCases[i].RequirmentId" class="form-control" asp-items="ViewBag.RequirmentId"></select>
+                            </div>
+                        </dd>
+                    </div>
+                }
+
+
+
+
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="LabaStatus" class="control-label"></label>
+                    <select asp-for="LabaStatus" class="form-control"
+                            asp-items="@Html.GetEnumSelectList<WebApplication6.Data.Entity.Enum.LabaStatus>()"></select>
+                    <span asp-validation-for="LabaStatus" class="text-danger"></span>
+                </div>
+</form>
     </div>
 </div>
 

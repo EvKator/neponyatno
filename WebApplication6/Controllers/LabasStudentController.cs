@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication6.Data;
 using WebApplication6.Data.Entity;
+using WebApplication6.Data.Entity.Enum;
+using WebApplication6.Services;
 
 namespace WebApplication6.Controllers
 {
@@ -21,20 +23,26 @@ namespace WebApplication6.Controllers
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
+        private readonly ILabaCheckerService _labaCheckerService;
+
         public LabasStudentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
-            IHttpContextAccessor httpContextAccessor)
+            IHttpContextAccessor httpContextAccessor, ILabaCheckerService checkerService)
         {
             _context = context;
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
+            _labaCheckerService = checkerService;
         }
 
         // GET: LabasStudent
         public async Task<IActionResult> Index()
         {
             string userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var z = _context.Labas.Where(q => q.StudentId == userId).ToList();
+            ;
+            ;
+
             var applicationDbContext = _context.Labas
-                .Where(a=>a.LabaStatus == Data.Entity.Enum.LabaStatus.SUBMITTED)
                 .Where(a=>a.StudentId == userId)
                 .Include(l => l.Student);
             return View(await applicationDbContext.ToListAsync());
@@ -49,8 +57,13 @@ namespace WebApplication6.Controllers
             }
 
             var laba = await _context.Labas
-                .Include(l => l.Student)
-                .FirstOrDefaultAsync(m => m.Id == id);
+              .Include(l => l.Student)
+              .Include(l => l.LabaCases)
+                  .ThenInclude(l => l.TestCase)
+              .Include(l => l.LabaCases)
+                  .ThenInclude(l => l.Requirment)
+              .Include(l => l.Specification)
+              .FirstOrDefaultAsync(m => m.Id == id);
             if (laba == null)
             {
                 return NotFound();
@@ -62,7 +75,7 @@ namespace WebApplication6.Controllers
         // GET: LabasStudent/Create
         public IActionResult Create()
         {
-            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Id");
+            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Email");
             return View();
         }
 
@@ -79,7 +92,7 @@ namespace WebApplication6.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Id", laba.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Email", laba.StudentId);
             return View(laba);
         }
 
@@ -91,12 +104,23 @@ namespace WebApplication6.Controllers
                 return NotFound();
             }
 
-            var laba = await _context.Labas.FindAsync(id);
+            var laba = await _context.Labas
+                .Include(a=>a.Specification)
+                    .ThenInclude(a=>a.Requirments)
+                        .ThenInclude(a=>a.TestCases)
+                .Include(a => a.LabaCases)
+                    .ThenInclude(a => a.Requirment)
+                .Include(a => a.LabaCases)
+                    .ThenInclude(a => a.TestCase)
+                .Where(a=>a.Id == id)
+                .FirstOrDefaultAsync();
             if (laba == null)
             {
                 return NotFound();
             }
-            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Id", laba.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Email", laba.StudentId);
+            ViewData["Status"] = new SelectList(new List<string>() { "SAVED", "READY_FOR_REVIEW" }, "Id", "Id", laba.LabaStatus);
+            ViewData["RequirmentId"] = new SelectList(_context.Requirments, "Id", "Name", laba.Specification.Requirments);
             return View(laba);
         }
 
@@ -105,7 +129,7 @@ namespace WebApplication6.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,LabaStatus,StudentId")] Laba laba)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,LabaStatus,StudentId, LabaCases, SpecificationId")] Laba laba)
         {
             if (id != laba.Id)
             {
@@ -116,7 +140,29 @@ namespace WebApplication6.Controllers
             {
                 try
                 {
+                    List<LabaCase> labaCases = laba.LabaCases.Where(a => a.RequirmentId != null).ToList();
+                    laba.LabaCases = labaCases;
+
+                    laba.StudentId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                     _context.Update(laba);
+                    _context.SaveChanges();
+                    var labaUpdated = _context.Labas
+                        .Include(l => l.Specification)
+                            .ThenInclude(l=>l.Requirments)
+                                .ThenInclude(l=>l.TestCases)
+                        .Include(l => l.LabaCases)
+                            .ThenInclude(l => l.Requirment)
+                                .ThenInclude(l => l.TestCases)
+                        .Include(l => l.LabaCases)
+                            .ThenInclude(l => l.TestCase)
+                        .Where(l => l.Id == laba.Id).FirstOrDefault();
+                    if (labaUpdated.LabaStatus == LabaStatus.READY_FOR_REVIEW)
+                    {
+                        labaUpdated.Mark = _labaCheckerService.Check(labaUpdated);
+                        labaUpdated.LabaStatus = LabaStatus.CHECKED;
+                    }
+                    _context.Update(labaUpdated);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -132,7 +178,7 @@ namespace WebApplication6.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Id", laba.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Email", laba.StudentId);
             return View(laba);
         }
 

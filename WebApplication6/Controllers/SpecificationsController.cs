@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -15,9 +16,12 @@ namespace WebApplication6.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public SpecificationsController(ApplicationDbContext context)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public SpecificationsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // GET: Specifications
@@ -51,7 +55,7 @@ namespace WebApplication6.Controllers
         // GET: Specifications/Create
         public IActionResult Create()
         {
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email");
             return View();
         }
 
@@ -64,12 +68,13 @@ namespace WebApplication6.Controllers
         {
 
             if (ModelState.IsValid)
-            {    
+            {
+                specification.AuthorId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
                 _context.Add(specification);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", specification.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", specification.AuthorId);
             return View(specification);
         }
 
@@ -86,7 +91,7 @@ namespace WebApplication6.Controllers
             {
                 return NotFound();
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", specification.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", specification.AuthorId);
             return View(specification);
         }
 
@@ -138,7 +143,7 @@ namespace WebApplication6.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", specification.AuthorId);
+            ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Email", specification.AuthorId);
             return View(specification);
         }
 

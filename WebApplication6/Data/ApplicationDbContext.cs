@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using WebApplication6.Data.Entity;
 
 using System;
+using WebApplication6.Models;
 
 namespace WebApplication6.Data
 {
@@ -30,6 +31,8 @@ namespace WebApplication6.Data
         public DbSet<WebApplication6.Data.Entity.ApplicationRole> ApplicationRole { get; set; }
 
         public DbSet<WebApplication6.Data.Entity.ApplicationUser> ApplicationUser { get; set; }
+
+        public DbSet<WebApplication6.Models.LabaCaseDto> LabaCaseDto { get; set; }
 
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
