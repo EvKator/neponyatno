@@ -14,13 +14,17 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             @*<div class="form-group">
-                <label asp-for="LabaStatus" class="control-label"></label>
-                <select asp-for="LabaStatus" class="form-control"></select>
-                <span asp-validation-for="LabaStatus" class="text-danger"></span>
-            </div>*@
+            <label asp-for="LabaStatus" class="control-label"></label>
+            <select asp-for="LabaStatus" class="form-control"></select>
+            <span asp-validation-for="LabaStatus" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <label asp-for="StudentId" class="control-label"></label>
-                <select asp-for="StudentId" class ="form-control" asp-items="ViewBag.StudentId"></select>
+                <select asp-for="StudentId" class="form-control" asp-items="ViewBag.StudentId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecificationId" class="control-label"></label>
+                <select asp-for="SpecificationId" class="form-control" asp-items="ViewBag.SpecificationId"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

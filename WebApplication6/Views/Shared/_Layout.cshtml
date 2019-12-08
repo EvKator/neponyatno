@@ -37,16 +37,18 @@
                     <li><a asp-area="" asp-controller="ApplicationUsers" asp-action="Index">ApplicationUsers</a></li>
                     <li><a asp-area="" asp-controller="ApplicationRoles" asp-action="Index">ApplicationRoles</a></li>
                     @*@if (User.IsInRole("Admin"))
-                    {*@
-                        <li><a asp-area="" asp-controller="Specifications" asp-action="Index">Specifications</a></li>
-                        <li><a asp-area="" asp-controller="Requirments" asp-action="Index">Requirments</a></li>
-                        <li><a asp-area="" asp-controller="TestCases" asp-action="Index">TestCases</a></li>
+        {*@
+                    <li><a asp-area="" asp-controller="Specifications" asp-action="Index">Specifications</a></li>
+                    <li><a asp-area="" asp-controller="Requirments" asp-action="Index">Requirments</a></li>
+                    <li><a asp-area="" asp-controller="TestCases" asp-action="Index">TestCases</a></li>
                     @*}
-                    @if (User.IsInRole("Student"))
-                    {*@
-                        <li><a asp-area="" asp-controller="Labas" asp-action="Index">Labas</a></li>
-                        <li><a asp-area="" asp-controller="LabaCases" asp-action="Index">LabaCases</a></li>
+        @if (User.IsInRole("Student"))
+        {*@
+                    <li><a asp-area="" asp-controller="Labas" asp-action="Index">Labas</a></li>
+                    <li><a asp-area="" asp-controller="LabaCases" asp-action="Index">LabaCases</a></li>
                     @*}*@
+
+                    <li><a asp-area="" asp-controller="LabasStudent" asp-action="Index">LabasStudent</a></li>
                 </ul>
                 <partial name="_LoginPartial" />
             </div>

@@ -36,6 +36,12 @@ namespace WebApplication6.Controllers
 
             var laba = await _context.Labas
                 .Include(l => l.Student)
+                .Include(l => l.Specification)
+                    .ThenInclude(l => l.Author)
+                .Include(l => l.Specification)
+                    .ThenInclude(l => l.Requirments)
+                        .ThenInclude(r=>r.TestCases)
+
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (laba == null)
             {
@@ -49,6 +55,7 @@ namespace WebApplication6.Controllers
         public IActionResult Create()
         {
             ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email");
+            ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Name");
             return View();
         }
 
@@ -57,16 +64,25 @@ namespace WebApplication6.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,LabaStatus,StudentId")] Laba laba)
+        public async Task<IActionResult> Create([Bind("Id,LabaStatus,StudentId, SpecificationId")] Laba laba)
         {
-            laba.LabaStatus = Data.Entity.Enum.LabaStatus.SAVED;
+            laba.LabaStatus = Data.Entity.Enum.LabaStatus.SUBMITTED;
             if (ModelState.IsValid)
             {
+                IList<Requirment> requirments = _context.Requirments.Where(a => 
+                a.SpecificationId == laba.SpecificationId).ToList();
+                requirments.Select(r => new LabaCase()
+                {
+                    Laba = laba,
+                    Requirment = r
+                }).ToList().ForEach(l => laba.LabaCases.Add(l));
+
                 _context.Add(laba);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Id", laba.StudentId);
+            ViewData["StudentId"] = new SelectList(_context.Users, "Email", "Id", laba.StudentId);
+            ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Id", laba.SpecificationId);
             return View(laba);
         }
 

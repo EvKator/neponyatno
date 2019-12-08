@@ -24,7 +24,9 @@ namespace WebApplication6.Data.Entity
 
         public virtual ApplicationUser Author { get; set; }
 
-        public virtual ICollection<Requirment> Requirments { get; set; }
+        public virtual IList<Requirment> Requirments { get; set; }
+
+        public virtual IList<Laba> Labas { get; set; }
 
     }
 }

@@ -9,6 +9,7 @@ namespace WebApplication6.Data.Entity.Enum
     {
         SAVED,
         SUBMITTED,
-        CHECKED
+        CHECKED,
+        READY_FOR_REVIEW
     }
 }

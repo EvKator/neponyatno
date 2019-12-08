@@ -18,6 +18,18 @@ namespace WebApplication6.Data.Entity
         [ForeignKey("Student")]
         public string StudentId { get; set; }
 
+        [ForeignKey("Specification")]
+        public int SpecificationId { get; set; }
+
         public virtual ApplicationUser Student { get; set; }
+
+        public virtual IList<LabaCase> LabaCases { get; set; }
+
+        public virtual Specification Specification { get; set; }
+
+        public Laba()
+        {
+            LabaCases = new List<LabaCase>();
+        }
     }
 }

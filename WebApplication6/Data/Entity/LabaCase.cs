@@ -12,9 +12,8 @@ namespace WebApplication6.Data.Entity
         [Key]
         public int Id { get; set; }
 
-        [Required]
         [ForeignKey("TestCase")]
-        public int TestCaseId { get; set; }
+        public int? TestCaseId { get; set; }
 
         [ForeignKey("Requirment")]
         public int RequirmentId { get; set; }
@@ -22,7 +21,6 @@ namespace WebApplication6.Data.Entity
         [ForeignKey("Laba")]
         public int LabaId { get; set; }
 
-        [Required]
         public virtual TestCase TestCase { get; set; }
 
         public virtual Requirment Requirment { get; set; }

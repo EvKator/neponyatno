@@ -198,9 +198,13 @@ namespace WebApplication6.Migrations
 
                     b.Property<int>("LabaStatus");
 
+                    b.Property<int>("SpecificationId");
+
                     b.Property<string>("StudentId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SpecificationId");
 
                     b.HasIndex("StudentId");
 
@@ -217,7 +221,7 @@ namespace WebApplication6.Migrations
 
                     b.Property<int>("RequirmentId");
 
-                    b.Property<int>("TestCaseId");
+                    b.Property<int?>("TestCaseId");
 
                     b.HasKey("Id");
 
@@ -343,6 +347,11 @@ namespace WebApplication6.Migrations
 
             modelBuilder.Entity("WebApplication6.Data.Entity.Laba", b =>
                 {
+                    b.HasOne("WebApplication6.Data.Entity.Specification", "Specification")
+                        .WithMany("Labas")
+                        .HasForeignKey("SpecificationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("WebApplication6.Data.Entity.ApplicationUser", "Student")
                         .WithMany()
                         .HasForeignKey("StudentId");
@@ -351,7 +360,7 @@ namespace WebApplication6.Migrations
             modelBuilder.Entity("WebApplication6.Data.Entity.LabaCase", b =>
                 {
                     b.HasOne("WebApplication6.Data.Entity.Laba", "Laba")
-                        .WithMany()
+                        .WithMany("LabaCases")
                         .HasForeignKey("LabaId")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -362,8 +371,7 @@ namespace WebApplication6.Migrations
 
                     b.HasOne("WebApplication6.Data.Entity.TestCase", "TestCase")
                         .WithMany()
-                        .HasForeignKey("TestCaseId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("TestCaseId");
                 });
 
             modelBuilder.Entity("WebApplication6.Data.Entity.Requirment", b =>
