@@ -24,7 +24,7 @@ namespace WebApplication6.Services.Impl
                 int i = random.Next(0, testCases1.Count);
                 testCases.Add(testCases1[i]);
             }
-            return testCases1;
+            return testCases;
         }
     }
 }
