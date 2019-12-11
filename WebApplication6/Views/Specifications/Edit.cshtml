@@ -28,7 +28,7 @@
 <div class="row">
 
     <form asp-action="Edit">
-        <div class="col-md-4" >
+        <div class="col-md-4">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -41,11 +41,16 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="QuestionsPerStudent" class="control-label"></label>
+                <input asp-for="QuestionsPerStudent" class="form-control">
+                <span asp-validation-for="QuestionsPerStudent" class="text-danger"></span>
+            </div>
             @*<div class="form-group">
-                    <label asp-for="AuthorId" class="control-label"></label>
-                    <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
-                    <span asp-validation-for="AuthorId" class="text-danger"></span>
-                </div>*@
+            <label asp-for="AuthorId" class="control-label"></label>
+            <select asp-for="AuthorId" class="form-control" asp-items="ViewBag.AuthorId"></select>
+            <span asp-validation-for="AuthorId" class="text-danger"></span>
+        </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-default" />
             </div>
@@ -188,6 +193,34 @@
                             refreshRequirment(id);
 
                         }
+                    });
+                });
+                }
+            })
+    }
+
+     function editNewTestCase(id) {
+            $.ajax({
+                url: "/TestCases/Edit",
+                data: { id: id },
+                type: "GET",
+                success: function (result) {
+                    $("#testcase-" + id).html(result);
+                    $("#testcase-" + id).find(".close-newvalue").on("click", function (e)
+                    {
+                          refreshRequirment(id);
+                    })
+                        $("#testcase-" + id).find('#testcase-form').submit(function (e) {
+                    e.preventDefault();
+                    $.ajax({
+                        url: '/TestCases/Edit',
+                        type: "POST",
+                        data: $(this).serialize(),
+                        success: function (data) {
+                            refreshRequirment(id);
+
+                        }
+                        
                     });
                 });
                 }

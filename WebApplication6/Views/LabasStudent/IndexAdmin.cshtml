@@ -20,15 +20,15 @@
          margin-left: 400px;
      }
 </style>
-<h2>Ваші завдання</h2>
+<h2>Історія виконання завдань</h2>
 
 @*<p>
     <a asp-action="Create">Create New</a>
 </p>*@
 <div class="row">
     <div class="col-md-6">
-        <h3>Попередні завдання</h3>
-        @foreach (var item in Model.Where(u => u.LabaStatus ==  WebApplication6.Data.Entity.Enum.LabaStatus.CHECKED ))
+        <h3>Історія завдань</h3>
+        @foreach (var item in Model)
         {
     <div class="panel panel-default done-task">
         <div class="panel-heading">
@@ -37,34 +37,14 @@
             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn1"><i class="fa fa-eye"></i>&nbsp;&nbsp;Детальніше</a>
         </div>
         <div class="panel-body">
-            <span style="        font-style: italic
-">@item.Specification.Description</span>
+            <p style="font-style: italic">@item.Specification.Description</p>
 
-
+            <p><i class="fa fa-user"></i>&nbsp;&nbsp;Виконав: @item.Student.UserName</p>
 
             <p>Оцінка: @item.Mark</p>
         </div>
     </div>
      }
-    </div>
-    <div class="col-md-6">
-        <h3>Збережені завдання</h3>
-        @foreach (var item in Model.Where(u => u.LabaStatus == WebApplication6.Data.Entity.Enum.LabaStatus.SAVED || u.LabaStatus == WebApplication6.Data.Entity.Enum.LabaStatus.SUBMITTED))
-        {
-            <div class="panel panel-default saved-task">
-                <div class="panel-heading">
-                    <h4>@item.Specification.Name</h4>
-                    <div>Останнє оновлення: @item.LastUpdateAt.ToString()</div>
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-play"></i>&nbsp;&nbsp;Продовжити виконання</a>
-                </div>
-                <div class="panel-body">
-                    <span style="font-style: italic">@item.Specification.Description</span>
-
-
-                  
-                </div>
-            </div>
-        }
     </div>
 </div>
 @*<table class="table">

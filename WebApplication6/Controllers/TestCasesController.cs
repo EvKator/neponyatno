@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication6.Data;
 using WebApplication6.Data.Entity;
+using WebApplication6.Data.Entity.Enum;
 
 namespace WebApplication6.Controllers
 {
@@ -53,6 +54,7 @@ namespace WebApplication6.Controllers
                 return NotFound();
             }
             ViewBag.RequirmentId = requirmentId.Value;
+            List<TestCaseType> testCaseTypes = new List<TestCaseType>() { TestCaseType.LOGIC, TestCaseType.LOGIC, TestCaseType.UI };
             return View();
         }
 
@@ -60,7 +62,7 @@ namespace WebApplication6.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,RequirmentId")] TestCase testCase)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,RequirmentId, TestCaseType")] TestCase testCase)
         {
             if (ModelState.IsValid)
             {
@@ -95,7 +97,7 @@ namespace WebApplication6.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,RequirmentId")] TestCase testCase)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,RequirmentId, TestCaseType")] TestCase testCase)
         {
             if (id != testCase.Id)
             {

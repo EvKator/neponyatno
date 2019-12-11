@@ -26,6 +26,7 @@ namespace WebApplication6.Data.Entity
         public string AuthorId { get; set; }
 
         [Range(1, int.MaxValue)]
+        [Display(Name = "Питань для студента")]
         public int QuestionsPerStudent { get; set; }
 
         public DateTime LastUpdateAt { get; set; }

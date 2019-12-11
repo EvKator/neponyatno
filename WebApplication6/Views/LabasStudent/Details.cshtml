@@ -1,155 +1,203 @@
 ﻿@model WebApplication6.Data.Entity.Laba
+@using WebApplication6.Data.Entity.Enum
+@using WebApplication6.Services
 
 @{
     ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+ Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+    .rightanswer {
+        background-color: aquamarine;
+        margin-right: 100px;
+    }
+    .testcaseright {
+        background-color: aquamarine;
+        margin-right: 100px;
+        margin-left:100px;
+    }
+    .wronganswer {
+        background-color: orangered;
+        margin-right: 100px;
+    }
 
-<h2>Details</h2>
+    .requirment {
+        margin-left: 5px;
+        background-color: lightgreen !important;
+        margin-right: 200px;
+    }
+</style>
+<h2><i class="fa fa-check"></i>&nbsp;&nbsp;Виконане завдання</h2>
+<h2><i class="fa fa-info"></i>&nbsp;&nbsp;Тема: @Model.Specification.Name</h2>
+<h3><i class="fa fa-book"></i>&nbsp;&nbsp;Опис:</h3>
+<p style="font-size:20px">@Model.Specification.Description</p>
+<h3><i class="fa fa-clock"></i>&nbsp;&nbsp;Виконано: @Model.Specification.LastUpdateAt.ToString() &nbsp;&nbsp;<i class="fa fa-user"></i>&nbsp;&nbsp; @Model.Student.UserName</h3>
 
-<div>
-    <h4>Laba</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.LabaStatus)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.LabaStatus)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Student)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Student.Email)
-        </dd>
-
-
-        <h4>Specification</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Specification.Name)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Specification.Name)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Specification.Description)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Specification.Description)
-            </dd>
-            <dt>
-                @Html.DisplayNameFor(model => model.Specification.Author)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Specification.Author.Email)
-            </dd>
-            <h5>Requirments:</h5>
-            @foreach (var requirment in Model.LabaCases)
-            {
-        <div class="panel panel-default">
-            <div class="panel-heading">
-
-            </div>
-            <div class="panel paneldefault">
-
-            </div>
-        </div>
-                <div style="background-color:aqua; border:1px solid black">
-                    <dt>
-                        Requirment
-                    </dt>
-                    <dd @if (requirment.RightAnswer.HasValue && requirment.RightAnswer.Value) { <text> style=" background-color:green" </text> } else { <text> style=" background-color:red" </text>  }>
-                        @if (requirment.Requirment != null)
-                        {
-                            <p>
-                                @requirment.Requirment.Name
-                            </p>
-                            <p>
-                                @requirment.Requirment.Description
-                            </p>
-                        }
-                        else
-                        {
-                            <h4>U've not responded</h4>
-                            <p>Fucking student</p>
-                        }
-                    </dd>
-                    <dt>
-                        TestCase
-                    </dt>
-                    <dd>
-                        @if (requirment.TestCase != null)
-                        {
-                            <h4>@requirment.TestCase.Name</h4>
-                            <p>@requirment.TestCase.Description</p>
-                        }
-                        else
-                        {
-                            <h4>U've not responded</h4>
-                            <p>Fucking student</p>
-                        }
-                    </dd>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Відповіді:</h2>
+        @foreach (var requirment in Model.Specification.Requirments)
+        {
+            <div>
+                <div class="panel panel-default requirment" requirmentid="@requirment.Id">
+                    <div class=" panel-heading">
+                        <bold>@requirment.Name</bold>
+                    </div>
+                    <div class="panel-body">
+                        <p>@requirment.Description</p>
+                    </div>
                 </div>
-            }
+                @foreach (var test in Model.LabaCases.Where(m => m.RequirmentId == requirment.Id))
+                {
+                    <div class="row">
+                        <div class="col-md-1">
+                            @if (test.RightAnswer.Value)
+                            {
+                                <i class="fa fa-2x fa-check-circle" style="color: greenyellow; display: inline-block; margin-top: 50px"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-2x fa-times-circle" style="color: orangered; display: inline-block; margin-top: 50px"></i>
+                            }
+                        </div>
+                        <div class="col-md-11">
+                            <div class="panel panel-default testcase @if (test.RightAnswer.Value) {<text>rightanswer</text>} else { <text>wronganswer</text>} " testid="@test.TestCase.Id">
+                                <div class=" panel-heading">
+                                    <bold>@test.TestCase.Name</bold>
+                                </div>
+                                <div class="panel-body">
+                                    <p>@test.TestCase.Description</p>
+                                    <span>@test.TestCaseType.DisplayName()</span>
 
-            @*@foreach (var requirment in Model.LabaCases)
-            {
-                <div style="background-color:aqua; border:1px solid black">
-                    <dt>
-                        Requirment
-                    </dt>
-                    <dd @if (requirment.RightAnswer.HasValue && requirment.RightAnswer.Value) { <text> style=" background-color:green" </text> } else { <text> style=" background-color:red" </text>  }>
-                        @if (requirment.Requirment != null)
-                        {
-                            <p>
-                                @requirment.Requirment.Name
-                            </p>
-                            <p>
-                                @requirment.Requirment.Description
-                            </p>
-                        }
-                        else
-                        {
-                            <h4>U've not responded</h4>
-                            <p>Fucking student</p>
-                        }
-                    </dd>
-                    <dt>
-                        TestCase
-                    </dt>
-                    <dd>
-                        @if (requirment.TestCase != null)
-                        {
-                            <h4>@requirment.TestCase.Name</h4>
-                            <p>@requirment.TestCase.Description</p>
-                        }
-                        else
-                        {
-                            <h4>U've not responded</h4>
-                            <p>Fucking student</p>
-                        }
-                    </dd>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div class="col-md-6">
+        <h2>Правильні відповіді:</h2>
+        @foreach (var requirment in Model.Specification.Requirments)
+        {
+            <div>
+                <div class="panel panel-default requirment" requirmentid="@requirment.Id">
+                    <div class=" panel-heading">
+                        <bold>@requirment.Name</bold>
+                    </div>
+                    <div class="panel-body">
+                        <p>@requirment.Description</p>
+                    </div>
                 </div>
-            }*@
+                @foreach (var test in requirment.TestCases)
+                {
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Mark)
-            </dt>
-            <dd>
-                @Html.DisplayFor(model => model.Mark)
-            </dd>
+                            <div class="panel panel-default testcaseright">
+                                <div class=" panel-heading">
+                                    <bold>@test.Name</bold>
+                                </div>
+                                <div class="panel-body">
+                                    <p>@test.Description</p>
+                                    <span>@test.TestCaseType.DisplayName()</span>
 
-
-        </dl>
-
-
-
-
+                                </div>
+                            </div>
+                }
+            </div>
+        }
+    </div>
 </div>
+@*@foreach (var requirment in Model.LabaCases)
+{
+    <div class="panel panel-default">
+        <div class="panel-heading">
+
+        </div>
+        <div class="panel panel-body">
+
+        </div>
+    </div>
+    <div style="background-color:aqua; border:1px solid black">
+        <dt>
+            Requirment
+        </dt>
+        <dd @if (requirment.RightAnswer.HasValue && requirment.RightAnswer.Value) { <text> style=" background-color:green" </text>  } else { <text> style=" background-color:red" </text> }>
+            @if (requirment.Requirment != null)
+            {
+                <p>
+                    @requirment.Requirment.Name
+                </p>
+                <p>
+                    @requirment.Requirment.Description
+                </p>
+            }
+            else
+            {
+                <h4>U've not responded</h4>
+                <p>Fucking student</p>
+            }
+        </dd>
+        <dt>
+            TestCase
+        </dt>
+        <dd>
+            @if (requirment.TestCase != null)
+            {
+                <h4>@requirment.TestCase.Name</h4>
+                <p>@requirment.TestCase.Description</p>
+            }
+            else
+            {
+                <h4>U've not responded</h4>
+                <p>Fucking student</p>
+            }
+        </dd>
+    </div>
+}*@
+
+@*@foreach (var requirment in Model.LabaCases)
+    {
+        <div style="background-color:aqua; border:1px solid black">
+            <dt>
+                Requirment
+            </dt>
+            <dd @if (requirment.RightAnswer.HasValue && requirment.RightAnswer.Value) { <text> style=" background-color:green" </text> } else { <text> style=" background-color:red" </text>  }>
+                @if (requirment.Requirment != null)
+                {
+                    <p>
+                        @requirment.Requirment.Name
+                    </p>
+                    <p>
+                        @requirment.Requirment.Description
+                    </p>
+                }
+                else
+                {
+                    <h4>U've not responded</h4>
+                    <p>Fucking student</p>
+                }
+            </dd>
+            <dt>
+                TestCase
+            </dt>
+            <dd>
+                @if (requirment.TestCase != null)
+                {
+                    <h4>@requirment.TestCase.Name</h4>
+                    <p>@requirment.TestCase.Description</p>
+                }
+                else
+                {
+                    <h4>U've not responded</h4>
+                    <p>Fucking student</p>
+                }
+            </dd>
+        </div>
+    }*@
+
+<h2><i class="fa fa-marker"></i>&nbsp;&nbsp;Оцінка: @Model.Mark</h2>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" asp-controller="LabasStudent" class="btn btn-default"><i class="fa fa-backward"></i>&nbsp;&nbsp;Назад до завдань</a>
 </div>

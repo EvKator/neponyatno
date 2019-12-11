@@ -1,6 +1,6 @@
 ﻿
 @model WebApplication6.Data.Entity.Specification
-
+@using WebApplication6.Services
 <a onclick="loadNewRequirment(@Model.Id)" @*asp-controller="Requirments" asp-action="Create" asp-route-specificationid="@Model.Id"*@ style="padding-left: 30px">
     <i class="fa fa-plus" aria-hidden="true"></i>
     <span>Додати вимогу</span>
@@ -36,11 +36,11 @@
     </div>
     @foreach (var test in requirment.TestCases)
     {
-        <div class="panel panel-default testcase">
+        <div class="panel panel-default testcase" id="testcase-@test.Id">
             <div class=" panel-heading">
 
                 <bold>@test.Name</bold>
-                <a asp-controller="TestCases" asp-action="Edit" asp-route-specificationid="@test.Id">
+                <a onclick="editNewTestCase(@test.Id)">
                     <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
                 <a href="#" data-id="@test.Id" data-toggle="modal" data-target="#confirm-delete-test"> <i class="fa fa-trash" aria-hidden="true"></i></a>
@@ -50,6 +50,7 @@
             </div>
             <div class="panel-body">
                 <p>@test.Description</p>
+                <p>Тип тестування @test.TestCaseType.DisplayName()</p>
             </div>
         </div>
 

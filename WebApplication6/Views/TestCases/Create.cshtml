@@ -1,4 +1,6 @@
-﻿@model WebApplication6.Data.Entity.TestCase
+﻿
+@using WebApplication6.Data.Entity.Enum
+@model WebApplication6.Data.Entity.TestCase
 
 @{
     ViewData["Title"] = "Create";
@@ -26,7 +28,11 @@
                 <input asp-for="RequirmentId" class="form-control" value="@ViewBag.RequirmentId" />
             </div>
             <div class="form-group">
-                <input type="submit" value="Додати" class="btn btn-default save-test"/>
+                <label asp-for="TestCaseType" class="control-label"></label>
+                <select asp-for="TestCaseType" class="form-control" asp-items="@Html.GetEnumSelectList<TestCaseType>()" ></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Додати" class="btn btn-default save-test" />
             </div>
         </form>
     </div>

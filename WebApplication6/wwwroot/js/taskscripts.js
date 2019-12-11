@@ -91,14 +91,38 @@ TaskEditor.prototype.init = function (laba) {
         }
     );
 
+    $(".testcasetype-select").change(function () {
+        var testId = $(this).parent().parent().attr("testid");
+        self.Laba.labaCases.forEach(element => {
+            if (element.testCaseId == testId) {
+                element.testCaseType = $(this).val();
+            }
+        });
+        console.log($(this).val());
+        console.log(testId);
+    })
+
+    for (var i = 0; i < $(".testcasetype-select").length; i++) {
+        for(var j =0;j < self.Laba.labaCases.length; j++)
+        {
+            var testId = $($(".testcasetype-select")[i]).parent().parent().attr("testid");
+            if(self.Laba.labaCases[j].testCaseId == testId)
+            {
+                $(".testcasetype-select")[i].value = self.Laba.labaCases[j].testCaseType;
+            }
+        }
+    }
     $("#save-action").on("click", function()
     {
         self.Laba.labaStatus = 0;
         $.ajax({
             url: "/LabasStudent/Edit/" + self.Laba.id,
             type: "post",
-            data : {laba : self.Laba}
-
+            data : {laba : self.Laba},
+            success: function(e)
+            {
+                window.location.href = "/LabasStudent/Index/" 
+            }
         })
     });
 
@@ -109,8 +133,11 @@ TaskEditor.prototype.init = function (laba) {
         $.ajax({
             url: "/LabasStudent/Edit/" + self.Laba.id,
             type: "post",
-            data : {laba : self.Laba}
-
+            data : {laba : self.Laba},
+            success: function(e)
+            {
+                window.location.href = "/LabasStudent/Details/" + self.Laba.id;
+            }
         })
     });
 
