@@ -9,7 +9,7 @@
         SpecificationId = Model.SpecificationId,
         LabaStatus = Model.LabaStatus,
         StudentId = Model.StudentId,
-        LabaCases = Model.LabaCases.Select(m => new { m.RequirmentId, m.TestCaseId, m.LabaId })
+        LabaCases = Model.LabaCases.Select(m => new { m.RequirmentId, m.TestCaseId, m.LabaId, m.Id })
     };
 }
 <script src="~/js/jquery.js"></script>
