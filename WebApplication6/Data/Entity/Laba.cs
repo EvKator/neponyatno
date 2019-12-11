@@ -21,6 +21,8 @@ namespace WebApplication6.Data.Entity
         [ForeignKey("Specification")]
         public int SpecificationId { get; set; }
 
+        public DateTime LastUpdateAt { get; set; }
+
         public uint? Mark { get; set; }
 
         public virtual ApplicationUser Student { get; set; }
@@ -32,6 +34,7 @@ namespace WebApplication6.Data.Entity
         public Laba()
         {
             LabaCases = new List<LabaCase>();
+            LastUpdateAt = DateTime.Now;
         }
     }
 }

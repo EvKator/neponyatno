@@ -25,11 +25,18 @@ namespace WebApplication6.Data.Entity
         [Range(1, int.MaxValue)]
         public int QuestionsPerStudent { get; set; }
 
+        public DateTime LastUpdateAt { get; set; }
+
         public virtual ApplicationUser Author { get; set; }
 
         public virtual IList<Requirment> Requirments { get; set; }
 
         public virtual IList<Laba> Labas { get; set; }
+
+        public Specification()
+        {
+            LastUpdateAt = DateTime.Now;
+        }
 
     }
 }

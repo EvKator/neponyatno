@@ -198,6 +198,8 @@ namespace WebApplication6.Migrations
 
                     b.Property<int>("LabaStatus");
 
+                    b.Property<DateTime>("LastUpdateAt");
+
                     b.Property<long?>("Mark");
 
                     b.Property<int>("SpecificationId");
@@ -272,6 +274,8 @@ namespace WebApplication6.Migrations
 
                     b.Property<string>("Description")
                         .HasMaxLength(255);
+
+                    b.Property<DateTime>("LastUpdateAt");
 
                     b.Property<string>("Name")
                         .IsRequired()
