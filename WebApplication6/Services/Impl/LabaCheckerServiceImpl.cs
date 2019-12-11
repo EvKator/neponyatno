@@ -8,11 +8,11 @@ using WebApplication6.Data.Entity;
 
 namespace WebApplication6.Services.Impl
 {
-    public class LabaCheckerService : ILabaCheckerService
+    public class LabaCheckerImpl : ILabaCheckerImpl
     {
         private ApplicationDbContext _context;
 
-        public LabaCheckerService(ApplicationDbContext context)
+        public LabaCheckerImpl(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -63,7 +63,7 @@ namespace WebApplication6.Services.Impl
             return IsRightAnswer(testCases, labaCase);
         }
 
-        public int Check(ILabaCheckerService laba)
+        public int Check(ILabaChecker laba)
         {
             throw new NotImplementedException();
         }

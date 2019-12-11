@@ -45,7 +45,8 @@ namespace WebApplication6
 
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddTransient<ILabaCheckerService, LabaCheckerService>();
+            services.AddTransient<ILabaCheckerImpl, LabaCheckerImpl>();
+            services.AddTransient<ILabaChecker, LabaChecker>();
             services.AddTransient<IQuestionsFactory, QuestionFactiory>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);

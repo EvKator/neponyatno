@@ -23,10 +23,10 @@ namespace WebApplication6.Controllers
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        private readonly ILabaCheckerService _labaCheckerService;
+        private readonly ILabaChecker _labaCheckerService;
 
         public LabasStudentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager,
-            IHttpContextAccessor httpContextAccessor, ILabaCheckerService checkerService)
+            IHttpContextAccessor httpContextAccessor, ILabaChecker checkerService)
         {
             _context = context;
             _userManager = userManager;

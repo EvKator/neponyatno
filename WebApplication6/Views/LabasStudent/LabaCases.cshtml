@@ -56,7 +56,7 @@
                         <p>@requirment.Description</p>
                     </div>
                 </div>
-                @foreach (var test in Model.LabaCases.Where(m => m.RequirmentId == requirment.Id).Select(m => m.TestCase))
+                @foreach (var test in Model.LabaCases.Where(m => m.RequirmentId == requirment.Id).Select(m => m.TestCase).ToList())
                 {
                     <div class="panel panel-default testcase" testid="@test.Id">
                         <div class=" panel-heading">
