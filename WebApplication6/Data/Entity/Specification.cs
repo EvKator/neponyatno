@@ -22,6 +22,9 @@ namespace WebApplication6.Data.Entity
         [ForeignKey("Author")]
         public string AuthorId { get; set; }
 
+        [Range(1, int.MaxValue)]
+        public int QuestionsPerStudent { get; set; }
+
         public virtual ApplicationUser Author { get; set; }
 
         public virtual IList<Requirment> Requirments { get; set; }

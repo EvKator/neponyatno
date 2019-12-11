@@ -277,6 +277,8 @@ namespace WebApplication6.Migrations
                         .IsRequired()
                         .HasMaxLength(30);
 
+                    b.Property<int>("QuestionsPerStudent");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AuthorId");

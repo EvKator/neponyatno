@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication6.Data;
 using WebApplication6.Data.Entity;
+using WebApplication6.Services;
 
 namespace WebApplication6.Controllers
 {
@@ -14,9 +15,12 @@ namespace WebApplication6.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        public LabasController(ApplicationDbContext context)
+        private readonly IQuestionsFactory _questionsFactory;
+
+        public LabasController(ApplicationDbContext context, IQuestionsFactory questionsFactory)
         {
             _context = context;
+            _questionsFactory = questionsFactory;
         }
 
         // GET: Labas
@@ -67,10 +71,18 @@ namespace WebApplication6.Controllers
         public async Task<IActionResult> Create([Bind("Id,LabaStatus,StudentId, SpecificationId")] Laba laba)
         {
             laba.LabaStatus = Data.Entity.Enum.LabaStatus.SUBMITTED;
+
+            Specification specification = _context.Specifications.Where(a => a.Id == laba.SpecificationId)
+                .Include(a=>a.Requirments)
+                    .ThenInclude(a=>a.TestCases)
+                .FirstOrDefault();
+
             if (ModelState.IsValid)
             {
-                IList<TestCase> testCases = _context.TestCases.Where(a => 
-                a.Requirment.SpecificationId == laba.SpecificationId).ToList();
+                List<TestCase> testCases = _questionsFactory.CreateQuestions(specification).ToList();
+                    
+                //    _context.TestCases.Where(a => 
+                //a.Requirment.SpecificationId == laba.SpecificationId).ToList();
                 testCases.Select(r => new LabaCase()
                 {
                     Laba = laba,

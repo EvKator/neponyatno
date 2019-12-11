@@ -33,7 +33,9 @@ namespace WebApplication6.Services.Impl
                     labaCase.RightAnswer = false;
                 }
             }
-            return Convert.ToUInt32(100 * (double)right / (double)specification.Requirments.SelectMany(a => a.TestCases).ToList().Count);
+            if (specification.QuestionsPerStudent <= 0)
+                return 100;
+            return Convert.ToUInt32(100 * (double)right / (double)specification.QuestionsPerStudent);
         }
 
         public void CheckAll()
