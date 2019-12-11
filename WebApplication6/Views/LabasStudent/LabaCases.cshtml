@@ -5,7 +5,7 @@
 @model WebApplication6.Data.Entity.Laba
 
 @{
-    var allTestCase = Model.Specification.Requirments.SelectMany(m => m.TestCases);
+    var allTestCase = Model.LabaCases.Select(m => m.TestCase);
     var usedTextCases = Model.LabaCases.Where(m => m.Requirment != null).Select(m => m.TestCase);
     var leftTestCase = allTestCase.Except(usedTextCases);
 }
