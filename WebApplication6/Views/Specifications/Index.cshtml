@@ -8,18 +8,18 @@
 <h2>Index</h2>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">      <i class="fa fa-plus" aria-hidden="true" style="height:30px; width: 30px"></i>   <span style="font-size: 30px; padding-left: 10px">Додати завдання</span></a>
 </p>
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th style="font-size: 20px">
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
+            <th style="font-size: 20px">
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
+            <th style="font-size: 20px">
                 @Html.DisplayNameFor(model => model.Author)
             </th>
             <th></th>
@@ -28,19 +28,19 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
+            <td style="font-size: 20px">
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
-            <td>
+            <td style="font-size: 20px">
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
-            <td>
+            <td style="font-size: 20px">
                 @Html.DisplayFor(modelItem => item.Author.Email)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Create" asp-controller="Labas" asp-route-specificationId="@item.Id"><i class="fas fa-edit" aria-hidden="true" style="height:20px; width: 20px"></i></a> |
+                <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit" aria-hidden="true" style="height:20px; width: 20px"></i></a> |
+                <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-trash" aria-hidden="true" style="height:20px; width: 20px"></i></a>
             </td>
         </tr>
 }

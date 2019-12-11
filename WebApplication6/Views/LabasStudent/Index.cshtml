@@ -5,12 +5,59 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<style>
+    .done-task{
+        background-color: greenyellow;
+    }
+     .saved-task{
+        background-color: lightyellow;
+    }
+</style>
+<h2>Ваші завдання</h2>
 
-<p>
+@*<p>
     <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+</p>*@
+<div class="row">
+    <div class="col-md-6">
+        <h3>Попередні завдання</h3>
+        @foreach (var item in Model.Where(u => u.LabaStatus ==  WebApplication6.Data.Entity.Enum.LabaStatus.CHECKED ))
+        {
+    <div class="panel panel-default done-task">
+        <div class="panel-heading">
+            @item.Specification.Name
+            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+        </div>
+        <div class="panel-body">
+            <span style="font-style: italic">@item.Specification.Description</span>
+
+
+
+            <p>Оцінка: @item.Mark</p>
+        </div>
+    </div>
+     }
+    </div>
+    <div class="col-md-6">
+        <h3>Збережені завдання</h3>
+        @foreach (var item in Model.Where(u => u.LabaStatus == WebApplication6.Data.Entity.Enum.LabaStatus.SAVED || u.LabaStatus == WebApplication6.Data.Entity.Enum.LabaStatus.SUBMITTED))
+        {
+            <div class="panel panel-default saved-task">
+                <div class="panel-heading">
+                    @item.Specification.Name
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                </div>
+                <div class="panel-body">
+                    <span style="font-style: italic">@item.Specification.Description</span>
+
+
+                  
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@*<table class="table">
     <thead>
         <tr>
             <th>
@@ -39,4 +86,4 @@
         </tr>
 }
     </tbody>
-</table>
+</table>*@

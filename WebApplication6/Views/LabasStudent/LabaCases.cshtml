@@ -1,0 +1,88 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model WebApplication6.Data.Entity.Laba
+
+@{
+    var allTestCase = Model.Specification.Requirments.SelectMany(m => m.TestCases);
+    var usedTextCases = Model.LabaCases.Where(m => m.Requirment != null).Select(m => m.TestCase);
+    var leftTestCase = allTestCase.Except(usedTextCases);
+}
+
+<style>
+    .testcase {
+        margin-left: 100px;
+        background-color: aquamarine !important;
+        margin-right: 100px;
+    }
+
+    .requirment {
+        margin-left: 5px;
+        background-color: lightgreen !important;
+        margin-right: 200px;
+    }
+
+    .on-requirment {
+        margin-left: 5px;
+        background-color: green;
+        margin-right: 100px !important;
+        height: 150px;
+        color: aliceblue;
+    }
+
+    #testcase-container {
+        background-color: rgba(255,255,224, 0.2);
+        border: 1px dashed black;
+        width: 100%;
+        height: 720px;
+        z-index: 1;
+    }
+
+    .testcase-container-on {
+        background-color: rgba(0,255,0, 0.2) !important;
+    }
+</style>
+<div class="row">
+    <div class="col-md-6">
+        @foreach (var requirment in Model.Specification.Requirments)
+        {
+            <div>
+                <div class="panel panel-default requirment" requirmentid="@requirment.Id">
+                    <div class=" panel-heading">
+                        <bold>@requirment.Name</bold>
+                    </div>
+                    <div class="panel-body">
+                        <p>@requirment.Description</p>
+                    </div>
+                </div>
+                @foreach (var test in Model.LabaCases.Where(m => m.RequirmentId == requirment.Id).Select(m => m.TestCase))
+                {
+                    <div class="panel panel-default testcase" testid="@test.Id">
+                        <div class=" panel-heading">
+                            <bold>@test.Name</bold>
+                        </div>
+                        <div class="panel-body">
+                            <p>@test.Description</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+    <div class="col-md-6">
+        <div id="testcase-container">
+            @foreach (var test in leftTestCase)
+            {
+                <div class="panel panel-default testcase" testid="@test.Id">
+                    <div class=" panel-heading">
+                        <bold>@test.Name</bold>
+                    </div>
+                    <div class="panel-body">
+                        <p>@test.Description</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

@@ -17,17 +17,18 @@
         margin-right: 100px;
     }
 
+
     .menu-button {
         margin-left: auto;
         margin-right: 0;
     }
 </style>
-<h2>Відредагуйте завдання</h2>
+<h2 style="padding-top: 50px">Відредагуйте завдання</h2>
 
 <div class="row">
 
     <form asp-action="Edit">
-        <div class="col-md-4">
+        <div class="col-md-4" >
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -50,7 +51,7 @@
             </div>
         </div>
         <div class="col-md-8 requirment-container">
-            @Html.RenderPartialAsync("Requirments", Model);
+            @{ await Html.RenderPartialAsync("Requirments", Model);}
         </div>
     </form>
 

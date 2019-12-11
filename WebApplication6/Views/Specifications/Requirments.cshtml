@@ -5,12 +5,13 @@
     <i class="fa fa-plus" aria-hidden="true"></i>
     <span>Додати вимогу</span>
 </a>
+<div class="panel panel-default requirment">
+    <div class="newvalue-requirment-@Model.Id">
+    </div>
+</div>
 @foreach (var requirment in Model.Requirments)
 {
-    <div class="panel panel-default requirment">
-        <div class="newvalue-requirment-@requirment.Id">
-        </div>
-    </div>
+
     <div class="panel panel-default requirment">
         <div class=" panel-heading">
             <bold>@requirment.Name</bold>

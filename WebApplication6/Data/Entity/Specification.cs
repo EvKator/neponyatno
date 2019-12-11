@@ -24,6 +24,7 @@ namespace WebApplication6.Data.Entity
         [ForeignKey("Author")]
         public string AuthorId { get; set; }
 
+        [Display(Name = "Автор")]
         public virtual ApplicationUser Author { get; set; }
 
         [Display(Name = "Вимоги для специфікації")]

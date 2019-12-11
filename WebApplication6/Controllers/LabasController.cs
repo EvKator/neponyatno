@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +15,12 @@ namespace WebApplication6.Controllers
     public class LabasController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public LabasController(ApplicationDbContext context)
+        public LabasController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         // GET: Labas
@@ -52,11 +56,21 @@ namespace WebApplication6.Controllers
         }
 
         // GET: Labas/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int? specificationId)
         {
+            if(!specificationId.HasValue)
+            {
+                return NotFound();
+            }
             ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email");
             ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Name");
-            return View();
+            Laba laba = new Laba()
+            {
+                LabaStatus = Data.Entity.Enum.LabaStatus.SUBMITTED,
+                SpecificationId = specificationId.Value,
+                StudentId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value
+            };
+            return await Create(laba);
         }
 
         // POST: Labas/Create
@@ -79,7 +93,7 @@ namespace WebApplication6.Controllers
 
                 _context.Add(laba);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Edit" , "LabasStudent", new { id = laba.Id});
             }
             ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email", laba.StudentId);
             ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Id", laba.SpecificationId);
