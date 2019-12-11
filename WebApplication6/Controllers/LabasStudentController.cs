@@ -38,7 +38,7 @@ namespace WebApplication6.Controllers
         public async Task<IActionResult> Index()
         {
             string userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var z = _context.Labas.Where(q => q.StudentId == userId).ToList();
+            var z = _context.Labas.Where(q => q.StudentId == userId).Include(m => m.Specification).ToList();
             ;
             ;
 
@@ -119,8 +119,8 @@ namespace WebApplication6.Controllers
                 return NotFound();
             }
             ViewData["StudentId"] = new SelectList(_context.ApplicationUser, "Id", "Email", laba.StudentId);
-            ViewData["Status"] = new SelectList(new List<string>() { "SAVED", "READY_FOR_REVIEW" }, "Id", "Id", laba.LabaStatus);
-            ViewData["RequirmentId"] = new SelectList(_context.Requirments, "Id", "Name", laba.Specification.Requirments);
+            ViewBag.Status= new SelectList(new List<string>() { "SAVED", "READY_FOR_REVIEW" }, "Id", "Id", laba.LabaStatus);
+            ViewData["RequirmentId"] = new SelectList(_context.Requirments.Where(m => m.SpecificationId == laba.Specification.Id), "Id", "Name", laba.Specification.Requirments);
             return View(laba);
         }
 
@@ -128,7 +128,6 @@ namespace WebApplication6.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,LabaStatus,StudentId, LabaCases, SpecificationId")] Laba laba)
         {
             if (id != laba.Id)

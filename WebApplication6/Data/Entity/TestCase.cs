@@ -15,9 +15,11 @@ namespace WebApplication6.Data.Entity
 
         [Required]
         [MaxLength(30)]
+        [Display(Name = "Назва тесту")]
         public string Name { get; set; }
 
         [MaxLength(2046)]
+        [Display(Name = "Опис тесту")]
         public string Description { get; set; }
 
         [ForeignKey("Requirment")]

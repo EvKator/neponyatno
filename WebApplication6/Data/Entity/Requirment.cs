@@ -14,9 +14,11 @@ namespace WebApplication6.Data.Entity
 
         [Required]
         [MaxLength(30)]
+        [Display(Name = "Назва вимоги")]
         public string Name { get; set; }
 
         [MaxLength(255)]
+        [Display(Name = "Опис вимоги")]
         public string Description { get; set; }
 
         [ForeignKey("Specification")]

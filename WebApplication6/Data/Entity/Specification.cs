@@ -14,9 +14,11 @@ namespace WebApplication6.Data.Entity
 
         [Required]
         [MaxLength(30)]
+        [Display(Name = "Назва специфіцкації")]
         public string Name { get; set; }
 
         [MaxLength(255)]
+        [Display(Name = "Опис специфікації")]
         public string Description { get; set; }
 
         [ForeignKey("Author")]
@@ -27,8 +29,10 @@ namespace WebApplication6.Data.Entity
 
         public DateTime LastUpdateAt { get; set; }
 
+        [Display(Name = "Автор")]
         public virtual ApplicationUser Author { get; set; }
 
+        [Display(Name = "Вимоги для специфікації")]
         public virtual IList<Requirment> Requirments { get; set; }
 
         public virtual IList<Laba> Labas { get; set; }
