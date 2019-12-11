@@ -47,7 +47,7 @@ namespace WebApplication6.Controllers
             ;
             ;
             ;
-            var applicationDbContext = _context.Specifications.Include(s => s.Author);
+            var applicationDbContext = _context.Specifications.Where(a => a.SpecStatus != Data.Entity.Enum.SpecStatus.DELETED).Include(s => s.Author);
             ;
             ;
             ;
@@ -200,7 +200,8 @@ namespace WebApplication6.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var specification = await _context.Specifications.FindAsync(id);
-            _context.Specifications.Remove(specification);
+            specification.SpecStatus = Data.Entity.Enum.SpecStatus.DELETED;
+            _context.Update(specification);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

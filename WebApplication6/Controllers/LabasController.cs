@@ -67,7 +67,7 @@ namespace WebApplication6.Controllers
                 return NotFound();
             }
             ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email");
-            ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Name");
+            ViewData["SpecificationId"] = new SelectList(_context.Specifications.Where(a=>a.SpecStatus != Data.Entity.Enum.SpecStatus.DELETED), "Id", "Name");
             Laba laba = new Laba()
             {
                 LabaStatus = Data.Entity.Enum.LabaStatus.SUBMITTED,
@@ -108,7 +108,7 @@ namespace WebApplication6.Controllers
                 return RedirectToAction("Edit" , "LabasStudent", new { id = laba.Id});
             }
             ViewData["StudentId"] = new SelectList(_context.Users, "Id", "Email", laba.StudentId);
-            ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Id", laba.SpecificationId);
+            ViewData["SpecificationId"] = new SelectList(_context.Specifications.Where(a => a.SpecStatus != Data.Entity.Enum.SpecStatus.DELETED), "Id", "Id", laba.SpecificationId);
             return View(laba);
         }
 

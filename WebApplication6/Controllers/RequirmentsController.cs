@@ -71,7 +71,7 @@ namespace WebApplication6.Controllers
                 //return RedirectToAction("Edit", "Specifications", new { id = requirment.SpecificationId });
                 return new OkResult();
             }
-            ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Name", requirment.SpecificationId);
+            ViewData["SpecificationId"] = new SelectList(_context.Specifications.Where(a => a.SpecStatus != Data.Entity.Enum.SpecStatus.DELETED), "Id", "Name", requirment.SpecificationId);
             return View(requirment);
         }
 
@@ -88,7 +88,7 @@ namespace WebApplication6.Controllers
             {
                 return NotFound();
             }
-            ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Name", requirment.SpecificationId);
+            ViewData["SpecificationId"] = new SelectList(_context.Specifications.Where(a => a.SpecStatus != Data.Entity.Enum.SpecStatus.DELETED), "Id", "Name", requirment.SpecificationId);
             return View(requirment);
         }
 
@@ -124,7 +124,7 @@ namespace WebApplication6.Controllers
                 }
                 return RedirectToAction("Edit", "Specifications", new { id = requirment.SpecificationId });
             }
-            ViewData["SpecificationId"] = new SelectList(_context.Specifications, "Id", "Name", requirment.SpecificationId);
+            ViewData["SpecificationId"] = new SelectList(_context.Specifications.Where(a => a.SpecStatus != Data.Entity.Enum.SpecStatus.DELETED), "Id", "Name", requirment.SpecificationId);
             return View(requirment);
         }
 
