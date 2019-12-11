@@ -44,7 +44,7 @@ namespace WebApplication6.Controllers
 
             var applicationDbContext = _context.Labas
                 .Where(a=>a.StudentId == userId)
-                .Include(l => l.Student);
+                .Include(l => l.Student).OrderByDescending(m => m.LastUpdateAt);
             return View(await applicationDbContext.ToListAsync());
         }
 

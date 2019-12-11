@@ -25,8 +25,9 @@
         {
     <div class="panel panel-default done-task">
         <div class="panel-heading">
-            @item.Specification.Name
-            <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+            <h4>@item.Specification.Name</h4>
+            <div>Останнє оновлення: @item.LastUpdateAt.ToString()</div>
+            <a asp-action="Details" asp-route-id="@item.Id">Детальніше</a> |
         </div>
         <div class="panel-body">
             <span style="font-style: italic">@item.Specification.Description</span>
@@ -44,8 +45,9 @@
         {
             <div class="panel panel-default saved-task">
                 <div class="panel-heading">
-                    @item.Specification.Name
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <h4>@item.Specification.Name</h4>
+                    <div>Останнє оновлення: @item.LastUpdateAt.ToString()</div>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Продовжити виконання</a>
                 </div>
                 <div class="panel-body">
                     <span style="font-style: italic">@item.Specification.Description</span>
