@@ -6,7 +6,7 @@ using WebApplication6.Data.Entity;
 
 namespace WebApplication6.Services
 {
-    public interface ILabaCheckerService
+    public interface ILabaCheckerImpl
     {
         uint Check(Laba laba);
 

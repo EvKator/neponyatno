@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,16 +19,43 @@ namespace WebApplication6.Controllers
 
         private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public SpecificationsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        private readonly UserManager<ApplicationUser> _userManager;
+
+
+        public SpecificationsController(ApplicationDbContext context, IHttpContextAccessor httpContextAccessor, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _httpContextAccessor = httpContextAccessor;
+            _userManager = userManager;
         }
 
         // GET: Specifications
         public async Task<IActionResult> Index()
         {
+            ;
+            //var userId = User.FindFirstValue(ClaimTypes.Name);
+            //var user = await _userManager.FindByIdAsync(_httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value);
+            //string role = (await _userManager.GetRolesAsync(user))[0];
+            //bool q = User.IsInRole(role);
+            //ViewBag.Role = role;
+            //UserManager.IsInRole(User.Identity.GetUserId(), "admin")
+            ;
+            ;
+            ;
+            ;
+            ;
+            ;
+            ;
+            ;
             var applicationDbContext = _context.Specifications.Include(s => s.Author);
+            ;
+            ;
+            ;
+            ;
+            ;
+            ;
+            ;
+            ;
             return View(await applicationDbContext.ToListAsync());
         }
 

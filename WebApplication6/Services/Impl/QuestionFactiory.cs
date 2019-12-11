@@ -22,7 +22,7 @@ namespace WebApplication6.Services.Impl
             while(testCases.Count < specification.QuestionsPerStudent)
             {
                 int i = random.Next(0, testCases1.Count);
-                testCases1.Add(testCases1[i]);
+                testCases.Add(testCases1[i]);
             }
             return testCases;
         }
