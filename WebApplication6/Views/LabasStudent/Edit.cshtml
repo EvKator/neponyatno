@@ -9,7 +9,7 @@
         SpecificationId = Model.SpecificationId,
         LabaStatus = Model.LabaStatus,
         StudentId = Model.StudentId,
-        LabaCases = Model.LabaCases.Select(m => new { m.RequirmentId, m.TestCaseId, m.LabaId, m.Id })
+        LabaCases = Model.LabaCases.Select(m => new { m.RequirmentId, m.TestCaseId, m.LabaId, m.Id, m.TestCaseType })
     };
 }
 <script src="~/js/jquery.js"></script>
@@ -106,17 +106,24 @@
                 </div>*@
 </form>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-    <a id="save-action">Зберегти</a>
-    <a id="ready-action">Відправити на перевірку</a>
-</div>
+<div class="row" style="padding:10px">
+    <div class="col-md-3">
+    </div>
+    <div class="col-md-6">
+        <a asp-action="Index" asp-controller="LabasStudent" class="btn btn-default"><i class="fa fa-backward"></i>&nbsp;&nbsp;Назад до завдань</a>
+        <a id="save-action" class="btn btn-info"><i class="fa fa-save"></i>&nbsp;&nbsp;Зберегти</a>
+        <a id="ready-action" class="btn btn-success"><i class="fa fa-check"></i>&nbsp;&nbsp;Відправити на перевірку</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+        <div class="col-md-3">
+        </div>
+        </div>
 
-<script>
+        @section Scripts {
+            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+        }
+
+        <script>
         var taskEditor = new TaskEditor();
         taskEditor.init(@Json.Serialize(JsonObject));
-</script>
+        </script>

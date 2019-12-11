@@ -35,7 +35,7 @@ namespace WebApplication6.Services.Impl
             }
             if (specification.QuestionsPerStudent <= 0)
                 return 100;
-            return Convert.ToUInt32(100 * (double)right / (double)specification.QuestionsPerStudent);
+            return Convert.ToUInt32(100 * (double)right / (double)(specification.QuestionsPerStudent > laba.LabaCases.Count? laba.LabaCases.Count:  specification.QuestionsPerStudent));
         }
 
         public void CheckAll()

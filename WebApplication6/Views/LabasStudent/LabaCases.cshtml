@@ -1,13 +1,12 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
-
+@using WebApplication6.Data.Entity.Enum
 @model WebApplication6.Data.Entity.Laba
 
-@{
-    var allTestCase = Model.LabaCases.Select(m => m.TestCase);
-    var usedTextCases = Model.LabaCases.Where(m => m.Requirment != null).Select(m => m.TestCase);
-    var leftTestCase = allTestCase.Except(usedTextCases);
+@{   
+    var usedTextCases = Model.LabaCases.Where(m => m.Requirment != null);
+    var leftTestCase = Model.LabaCases.Except(usedTextCases);
 }
 
 <style>
@@ -35,7 +34,7 @@
         background-color: rgba(255,255,224, 0.2);
         border: 1px dashed black;
         width: 100%;
-        height: 720px;
+        height: 100%;
         z-index: 1;
     }
 
@@ -56,14 +55,16 @@
                         <p>@requirment.Description</p>
                     </div>
                 </div>
-                @foreach (var test in Model.LabaCases.Where(m => m.RequirmentId == requirment.Id).Select(m => m.TestCase))
+                @foreach (var test in Model.LabaCases.Where(m => m.RequirmentId == requirment.Id))
                 {
-                    <div class="panel panel-default testcase" testid="@test.Id">
+                    <div class="panel panel-default testcase" testid="@test.TestCase.Id">
                         <div class=" panel-heading">
-                            <bold>@test.Name</bold>
+                            <bold>@test.TestCase.Name</bold>
                         </div>
                         <div class="panel-body">
-                            <p>@test.Description</p>
+                            <p>@test.TestCase.Description</p>
+                            <select class="form-control testcasetype-select" asp-items="@Html.GetEnumSelectList<TestCaseType>()"></select>
+
                         </div>
                     </div>
                 }
@@ -76,10 +77,11 @@
             {
                 <div class="panel panel-default testcase" testid="@test.Id">
                     <div class=" panel-heading">
-                        <bold>@test.Name</bold>
+                        <bold>@test.TestCase.Name</bold>
                     </div>
                     <div class="panel-body">
-                        <p>@test.Description</p>
+                        <p>@test.TestCase.Description</p>
+                        <select class="form-control testcasetype-select" asp-items="@Html.GetEnumSelectList<TestCaseType>()" selected="@test.TestCaseType" ></select>
                     </div>
                 </div>
             }

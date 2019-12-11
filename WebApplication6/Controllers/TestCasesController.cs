@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApplication6.Data;
 using WebApplication6.Data.Entity;
+using WebApplication6.Data.Entity.Enum;
 
 namespace WebApplication6.Controllers
 {
@@ -53,6 +54,7 @@ namespace WebApplication6.Controllers
                 return NotFound();
             }
             ViewBag.RequirmentId = requirmentId.Value;
+            List<TestCaseType> testCaseTypes = new List<TestCaseType>() { TestCaseType.LOGIC, TestCaseType.LOGIC, TestCaseType.UI };
             return View();
         }
 

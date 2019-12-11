@@ -1,6 +1,6 @@
 ﻿
 @model WebApplication6.Data.Entity.Specification
-
+@using WebApplication6.Services
 <a onclick="loadNewRequirment(@Model.Id)" @*asp-controller="Requirments" asp-action="Create" asp-route-specificationid="@Model.Id"*@ style="padding-left: 30px">
     <i class="fa fa-plus" aria-hidden="true"></i>
     <span>Додати вимогу</span>
@@ -50,6 +50,7 @@
             </div>
             <div class="panel-body">
                 <p>@test.Description</p>
+                <p>Тип тестування @test.TestCaseType.DisplayName()</p>
             </div>
         </div>
 

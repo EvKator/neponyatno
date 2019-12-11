@@ -12,6 +12,13 @@
      .saved-task{
         background-color: lightyellow;
     }
+     .btn{
+         margin-left: 330px;
+     }
+
+          .btn1{
+         margin-left: 400px;
+     }
 </style>
 <h2>Ваші завдання</h2>
 
@@ -27,10 +34,11 @@
         <div class="panel-heading">
             <h4>@item.Specification.Name</h4>
             <div>Останнє оновлення: @item.LastUpdateAt.ToString()</div>
-            <a asp-action="Details" asp-route-id="@item.Id">Детальніше</a> |
+            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn1"><i class="fa fa-eye"></i>&nbsp;&nbsp;Детальніше</a>
         </div>
         <div class="panel-body">
-            <span style="font-style: italic">@item.Specification.Description</span>
+            <span style="        font-style: italic
+">@item.Specification.Description</span>
 
 
 
@@ -47,7 +55,7 @@
                 <div class="panel-heading">
                     <h4>@item.Specification.Name</h4>
                     <div>Останнє оновлення: @item.LastUpdateAt.ToString()</div>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Продовжити виконання</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-info"><i class="fa fa-play"></i>&nbsp;&nbsp;Продовжити виконання</a>
                 </div>
                 <div class="panel-body">
                     <span style="font-style: italic">@item.Specification.Description</span>
