@@ -47,7 +47,17 @@ namespace WebApplication6.Controllers
             ;
             ;
             ;
-            var applicationDbContext = _context.Specifications.Include(s => s.Author);
+            if (User.IsInRole("Student"))
+            {
+                var doneLabs = _context.Labas.Where(m => m.StudentId == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value && m.LabaStatus == Data.Entity.Enum.LabaStatus.CHECKED).Select(m => m.SpecificationId);
+                var applicationDbContextStudent = _context.Specifications.Include(s => s.Author).Where(s => !doneLabs.Contains(s.Id));
+                return View(await applicationDbContextStudent.ToListAsync());
+            }
+            else
+            {
+                var applicationDbContextAdmin = _context.Specifications.Include(s => s.Author);
+                return View(await applicationDbContextAdmin.ToListAsync());
+            }
             ;
             ;
             ;
@@ -55,8 +65,6 @@ namespace WebApplication6.Controllers
             ;
             ;
             ;
-            ;
-            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Specifications/Details/5
