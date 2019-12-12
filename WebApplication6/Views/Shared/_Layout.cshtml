@@ -49,19 +49,23 @@
                     {
                         <li><a asp-area="" asp-controller="Specifications" asp-action="Index" style="color:white;font-size:22px"><i class="fa fa-book"></i>&nbsp;&nbsp;Завдання</a></li>
                     }
-                        @*<li><a asp-area="" asp-controller="Requirments" asp-action="Index">Requirments</a></li>
-            <li><a asp-area="" asp-controller="TestCases" asp-action="Index">TestCases</a></li>*@
-                        @*}
-            @if (User.IsInRole("Student"))
-            {*@
-                        @*<li><a asp-area="" asp-controller="Labas" asp-action="Index">Labas</a></li>
-            <li><a asp-area="" asp-controller="LabaCases" asp-action="Index">LabaCases</a></li>*@
-                        @*}*@
-                        @if (User.IsInRole("Student"))
-                        {
-                            <li><a asp-area="" asp-controller="LabasStudent" asp-action="Index" style="color:white;font-size:22px"><i class="fa fa-history"></i>&nbsp;&nbsp;Мої завдання</a></li>
-                        }
-                    </ul>
+                    @*<li><a asp-area="" asp-controller="Requirments" asp-action="Index">Requirments</a></li>
+        <li><a asp-area="" asp-controller="TestCases" asp-action="Index">TestCases</a></li>*@
+                    @*}
+        @if (User.IsInRole("Student"))
+        {*@
+                    @*<li><a asp-area="" asp-controller="Labas" asp-action="Index">Labas</a></li>
+        <li><a asp-area="" asp-controller="LabaCases" asp-action="Index">LabaCases</a></li>*@
+                    @*}*@
+                    @if (User.IsInRole("Student"))
+                    {
+                        <li><a asp-area="" asp-controller="LabasStudent" asp-action="Index" style="color:white;font-size:22px"><i class="fa fa-history"></i>&nbsp;&nbsp;Мої завдання</a></li>
+                    }
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a asp-area="" asp-controller="LabasStudent" asp-action="IndexAdmin" style="color:white;font-size:22px"><i class="fa fa-history"></i>&nbsp;&nbsp;Завдання інших користувачів</a></li>
+                    }
+                </ul>
                 <partial name="_LoginPartial" />
             </div>
         </div>

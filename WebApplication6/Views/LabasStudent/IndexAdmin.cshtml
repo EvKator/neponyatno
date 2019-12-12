@@ -1,0 +1,79 @@
+﻿@model IEnumerable<WebApplication6.Data.Entity.Laba>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .done-task{
+        background-color: greenyellow;
+    }
+     .saved-task{
+        background-color: lightyellow;
+    }
+     .btn{
+         margin-left: 330px;
+     }
+
+          .btn1{
+         margin-left: 400px;
+     }
+</style>
+<h2>Історія виконання завдань</h2>
+
+@*<p>
+    <a asp-action="Create">Create New</a>
+</p>*@
+<div class="row">
+    <div class="col-md-6">
+        <h3>Історія завдань</h3>
+        @foreach (var item in Model)
+        {
+    <div class="panel panel-default done-task">
+        <div class="panel-heading">
+            <h4>@item.Specification.Name</h4>
+            <div>Останнє оновлення: @item.LastUpdateAt.ToString()</div>
+            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn1"><i class="fa fa-eye"></i>&nbsp;&nbsp;Детальніше</a>
+        </div>
+        <div class="panel-body">
+            <p style="font-style: italic">@item.Specification.Description</p>
+
+            <p><i class="fa fa-user"></i>&nbsp;&nbsp;Виконав: @item.Student.UserName</p>
+
+            <p>Оцінка: @item.Mark</p>
+        </div>
+    </div>
+     }
+    </div>
+</div>
+@*<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LabaStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Student)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LabaStatus)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Student.Email)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>*@

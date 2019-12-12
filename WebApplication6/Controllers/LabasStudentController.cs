@@ -48,6 +48,18 @@ namespace WebApplication6.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+        // GET: LabasStudent
+        public async Task<IActionResult> IndexAdmin()
+        {
+            string userId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var z = _context.Labas.Where(q => q.StudentId == userId).Include(m => m.Specification).ToList();
+
+            var applicationDbContext = _context.Labas
+                .Where(a => a.LabaStatus == LabaStatus.CHECKED)
+                .Include(l => l.Student).OrderByDescending(m => m.LastUpdateAt);
+            return View(await applicationDbContext.ToListAsync());
+        }
+
         // GET: LabasStudent/Details/5
         public async Task<IActionResult> Details(int? id)
         {

@@ -118,8 +118,11 @@ TaskEditor.prototype.init = function (laba) {
         $.ajax({
             url: "/LabasStudent/Edit/" + self.Laba.id,
             type: "post",
-            data : {laba : self.Laba}
-
+            data : {laba : self.Laba},
+            success: function(e)
+            {
+                window.location.href = "/LabasStudent/Index/" 
+            }
         })
     });
 
@@ -130,8 +133,11 @@ TaskEditor.prototype.init = function (laba) {
         $.ajax({
             url: "/LabasStudent/Edit/" + self.Laba.id,
             type: "post",
-            data : {laba : self.Laba}
-
+            data : {laba : self.Laba},
+            success: function(e)
+            {
+                window.location.href = "/LabasStudent/Details/" + self.Laba.id;
+            }
         })
     });
 

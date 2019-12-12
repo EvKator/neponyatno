@@ -36,11 +36,11 @@
     </div>
     @foreach (var test in requirment.TestCases)
     {
-        <div class="panel panel-default testcase">
+        <div class="panel panel-default testcase" id="testcase-@test.Id">
             <div class=" panel-heading">
 
                 <bold>@test.Name</bold>
-                <a asp-controller="TestCases" asp-action="Edit" asp-route-specificationid="@test.Id">
+                <a onclick="editNewTestCase(@test.Id)">
                     <i class="fas fa-edit" aria-hidden="true"></i>
                 </a>
                 <a href="#" data-id="@test.Id" data-toggle="modal" data-target="#confirm-delete-test"> <i class="fa fa-trash" aria-hidden="true"></i></a>

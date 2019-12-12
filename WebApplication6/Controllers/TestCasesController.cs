@@ -62,7 +62,7 @@ namespace WebApplication6.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,RequirmentId")] TestCase testCase)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,RequirmentId, TestCaseType")] TestCase testCase)
         {
             if (ModelState.IsValid)
             {
@@ -97,7 +97,7 @@ namespace WebApplication6.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,RequirmentId")] TestCase testCase)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,RequirmentId, TestCaseType")] TestCase testCase)
         {
             if (id != testCase.Id)
             {

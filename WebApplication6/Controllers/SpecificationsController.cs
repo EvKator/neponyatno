@@ -49,7 +49,7 @@ namespace WebApplication6.Controllers
             ;
             if (User.IsInRole("Student"))
             {
-                var doneLabs = _context.Labas.Where(m => m.StudentId == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value && m.LabaStatus == Data.Entity.Enum.LabaStatus.CHECKED).Select(m => m.SpecificationId);
+                var doneLabs = _context.Labas.Where(m => (m.StudentId == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value && (m.LabaStatus == Data.Entity.Enum.LabaStatus.SAVED || m.LabaStatus == Data.Entity.Enum.LabaStatus.CHECKED))).Select(m => m.SpecificationId);// && m.LabaStatus == Data.Entity.Enum.LabaStatus.CHECKED && m.LabaStatus == Data.Entity.Enum.LabaStatus.SAVED).Select(m => m.SpecificationId);
                 var applicationDbContextStudent = _context.Specifications.Include(s => s.Author).Where(s => !doneLabs.Contains(s.Id));
                 return View(await applicationDbContextStudent.ToListAsync());
             }
@@ -152,7 +152,7 @@ namespace WebApplication6.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,AuthorId")] Specification specification)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,AuthorId,QuestionsPerStudent ")] Specification specification)
         {
             if (id != specification.Id)
             {

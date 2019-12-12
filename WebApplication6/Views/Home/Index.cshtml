@@ -2,14 +2,45 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div>
-    <div class="panel panel-default" style="margin-top: 100px">
-        <div class="panel-heading">
-            <h1>Вітаємо у віртуальній лабараторії з розробки програмного забезпечення</h1>
-        </div>
-        <div class="panel-body">
-            <h2>Оберіть завдання для виконання в пункті "Завдання."</h2>
+@if (User.IsInRole("Student"))
+{
+    <div>
+        <div class="panel panel-default" style="margin-top: 100px">
+            <div class="panel-heading">
+                <h1>Вітаємо у віртуальній лабараторії з розробки програмного забезпечення</h1>
+            </div>
+            <div class="panel-body">
+                <h2>Оберіть завдання для виконання в пункті <a asp-controller="Specifications" asp-action="Index">"Завдання."</a></h2>
+            </div>
         </div>
     </div>
-</div>
-<img src="~/images/clipartwiki.com-methodical-clipart-1834382.png"  style="width:70%;height:40%;margin-left:150px"/>
+    <img src="~/images/clipartwiki.com-methodical-clipart-1834382.png" style="width:70%;height:40%;margin-left:150px" />
+}
+@if (User.IsInRole("Admin"))
+{
+    <div>
+        <div class="panel panel-default" style="margin-top: 100px">
+            <div class="panel-heading">
+                <h1>Вітаємо у віртуальній лабараторії з розробки програмного забезпечення</h1>
+            </div>
+            <div class="panel-body">
+                <h2>Редагуйте доступні завдання в пункті<a asp-controller="Specifications" asp-action="Index">"Завдання."</a></h2>
+            </div>
+        </div>
+    </div>
+    <img src="~/images/clipartwiki.com-methodical-clipart-1834382.png" style="width:70%;height:40%;margin-left:150px" />
+}
+else
+{
+    <div>
+        <div class="panel panel-default" style="margin-top: 100px">
+            <div class="panel-heading">
+                <h1>Вітаємо у віртуальній лабараторії з розробки програмного забезпечення</h1>
+            </div>
+            <div class="panel-body">
+                <h2>Для використання системи <a asp-area="Identity" asp-page="/Account/Login">увійдіть</a> або <a asp-area="Identity" asp-page="/Account/Register">зареєструйтесь</a></h2>
+            </div>
+        </div>
+    </div>
+    <img src="~/images/clipartwiki.com-methodical-clipart-1834382.png" style="width:70%;height:40%;margin-left:150px" />
+}
