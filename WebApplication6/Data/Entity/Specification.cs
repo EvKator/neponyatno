@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using WebApplication6.Data.Entity.Enum;
 
 namespace WebApplication6.Data.Entity
 {
@@ -37,6 +38,8 @@ namespace WebApplication6.Data.Entity
         public virtual IList<Requirment> Requirments { get; set; }
 
         public virtual IList<Laba> Labas { get; set; }
+
+        public SpecStatus SpecStatus { get; set; }
 
         public Specification()
         {

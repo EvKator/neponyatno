@@ -47,6 +47,10 @@ namespace WebApplication6.Controllers
             ;
             ;
             ;
+<<<<<<< HEAD
+            var applicationDbContext = _context.Specifications.Where(a => a.SpecStatus != Data.Entity.Enum.SpecStatus.DELETED).Include(s => s.Author);
+            ;
+=======
             if (User.IsInRole("Student"))
             {
                 var doneLabs = _context.Labas.Where(m => (m.StudentId == _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value && (m.LabaStatus == Data.Entity.Enum.LabaStatus.SAVED || m.LabaStatus == Data.Entity.Enum.LabaStatus.CHECKED))).Select(m => m.SpecificationId);// && m.LabaStatus == Data.Entity.Enum.LabaStatus.CHECKED && m.LabaStatus == Data.Entity.Enum.LabaStatus.SAVED).Select(m => m.SpecificationId);
@@ -58,6 +62,7 @@ namespace WebApplication6.Controllers
                 var applicationDbContextAdmin = _context.Specifications.Include(s => s.Author);
                 return View(await applicationDbContextAdmin.ToListAsync());
             }
+>>>>>>> 04db61293cfb8219889c70c6f1f09ed81aade817
             ;
             ;
             ;
@@ -208,7 +213,8 @@ namespace WebApplication6.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var specification = await _context.Specifications.FindAsync(id);
-            _context.Specifications.Remove(specification);
+            specification.SpecStatus = Data.Entity.Enum.SpecStatus.DELETED;
+            _context.Update(specification);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
